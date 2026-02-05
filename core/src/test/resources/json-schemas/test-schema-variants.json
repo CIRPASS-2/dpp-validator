@@ -1,0 +1,448 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "deviceIdentification",
+    "deviceSpecifications",
+    "componentDetails",
+    "maintenanceGuidelines",
+    "environmentalImpact",
+    "endOfLife",
+    "regulations"
+  ],
+  "properties": {
+    "deviceIdentification": {
+      "type": "object",
+      "required": [
+        "serialNumber",
+        "modelName",
+        "manufacturer"
+      ],
+      "properties": {
+        "serialNumber": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{10,20}$",
+          "description": "Unique device serial number"
+        },
+        "modelName": {
+          "type": "string"
+        },
+        "manufacturer": {
+          "type": "object",
+          "required": [
+            "companyName",
+            "headquarters"
+          ],
+          "properties": {
+            "companyName": {
+              "type": "string"
+            },
+            "headquarters": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$",
+              "description": "ISO 3166-1 alpha-2 country code"
+            },
+            "facility": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "deviceSpecifications": {
+      "type": "object",
+      "required": [
+        "deviceCategory",
+        "weight",
+        "dimensions"
+      ],
+      "properties": {
+        "deviceCategory": {
+          "type": "string",
+          "enum": [
+            "consumer",
+            "industrial",
+            "professional"
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "description": "Weight in kilograms"
+        },
+        "dimensions": {
+          "type": "string",
+          "description": "Dimensions in format WxHxD cm"
+        },
+        "releaseYear": {
+          "type": "integer"
+        }
+      }
+    },
+    "componentDetails": {
+      "type": "object",
+      "required": [
+        "mainComponents"
+      ],
+      "properties": {
+        "mainComponents": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "componentName",
+              "quantity"
+            ],
+            "properties": {
+              "componentName": {
+                "type": "string",
+                "description": "Name of component (e.g., battery, display, processor)"
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "primaryMaterial": {
+          "type": "string",
+          "enum": [
+            "plastic",
+            "metal",
+            "composite"
+          ],
+          "description": "Dominant material composition"
+        },
+        "plasticPercentage": {
+          "type": "number"
+        },
+        "metalPercentage": {
+          "type": "number"
+        }
+      }
+    },
+    "maintenanceGuidelines": {
+      "type": "object",
+      "required": [
+        "cleaning",
+        "storage",
+        "handling"
+      ],
+      "properties": {
+        "cleaning": {
+          "type": "string",
+          "description": "Cleaning procedures and recommendations"
+        },
+        "storage": {
+          "type": "string",
+          "description": "Storage conditions and requirements"
+        },
+        "handling": {
+          "type": "string",
+          "description": "Safe handling instructions"
+        },
+        "batteryMaintenance": {
+          "type": "string"
+        },
+        "softwareUpdates": {
+          "type": "string"
+        }
+      }
+    },
+    "environmentalImpact": {
+      "type": "object",
+      "required": [
+        "waterUsage",
+        "powerConsumption",
+        "hazardousMaterials",
+        "carbonEmissions"
+      ],
+      "properties": {
+        "waterUsage": {
+          "type": "number",
+          "description": "Water usage in liters during production"
+        },
+        "powerConsumption": {
+          "type": "number",
+          "description": "Power consumption in watts during operation"
+        },
+        "hazardousMaterials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of hazardous materials present"
+        },
+        "carbonEmissions": {
+          "type": "number",
+          "description": "Carbon emissions in kg CO2 eq during lifecycle"
+        },
+        "energyStarCertified": {
+          "type": "boolean"
+        },
+        "conflictMinerals": {
+          "type": "array"
+        },
+        "batteryCapacity": {
+          "type": "number"
+        },
+        "standbyPower": {
+          "type": "number"
+        },
+        "electronicWasteGeneration": {
+          "type": "number"
+        },
+        "toxicSubstances": {
+          "type": "array"
+        },
+        "manufacturingEmissions": {
+          "type": "number"
+        }
+      }
+    },
+    "endOfLife": {
+      "type": "object",
+      "required": [
+        "repairability",
+        "reuseContent",
+        "expectedLifespan"
+      ],
+      "properties": {
+        "repairability": {
+          "type": "string",
+          "enum": [
+            "excellent",
+            "good",
+            "fair",
+            "poor"
+          ]
+        },
+        "reuseContent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of reused materials"
+        },
+        "expectedLifespan": {
+          "type": "number",
+          "description": "Expected lifespan in years"
+        },
+        "disassemblyEase": {
+          "type": "boolean"
+        },
+        "componentRecovery": {
+          "type": "boolean"
+        },
+        "refurbishmentPotential": {
+          "type": "string"
+        },
+        "upgradeability": {
+          "type": "string"
+        }
+      }
+    },
+    "regulations": {
+      "type": "object",
+      "required": [
+        "rohs",
+        "weee"
+      ],
+      "properties": {
+        "rohs": {
+          "type": "boolean",
+          "description": "RoHS compliance (restriction of hazardous substances)"
+        },
+        "weee": {
+          "type": "boolean",
+          "description": "WEEE directive compliance"
+        }
+      }
+    },
+    "supplyChain": {
+      "type": "object",
+      "properties": {
+        "battery": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "certifications": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "deviceSpecifications": {
+          "properties": {
+            "deviceCategory": {
+              "const": "consumer"
+            }
+          }
+        },
+        "consumerFeatures": {
+          "type": "object",
+          "required": [
+            "warrantyPeriod",
+            "userManualLanguages",
+            "customerSupport"
+          ],
+          "properties": {
+            "warrantyPeriod": {
+              "type": "integer",
+              "description": "Warranty period in months"
+            },
+            "userManualLanguages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "customerSupport": {
+              "type": "string"
+            },
+            "ecoLabel": {
+              "type": "boolean"
+            },
+            "energyRating": {
+              "type": "string"
+            }
+          }
+        },
+        "environmentalImpact": {
+          "properties": {
+            "batteryCapacity": {
+              "type": "number"
+            },
+            "standbyPower": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": [
+        "consumerFeatures"
+      ]
+    },
+    {
+      "properties": {
+        "deviceSpecifications": {
+          "properties": {
+            "deviceCategory": {
+              "const": "industrial"
+            }
+          }
+        },
+        "industrialFeatures": {
+          "type": "object",
+          "required": [
+            "operatingTemperature",
+            "certifications",
+            "maintenanceSchedule"
+          ],
+          "properties": {
+            "operatingTemperature": {
+              "type": "string",
+              "description": "Operating temperature range"
+            },
+            "certifications": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Industrial certifications"
+            },
+            "maintenanceSchedule": {
+              "type": "string"
+            },
+            "dutyCycle": {
+              "type": "number"
+            },
+            "meanTimeBetweenFailures": {
+              "type": "number"
+            }
+          }
+        },
+        "environmentalImpact": {
+          "properties": {
+            "electronicWasteGeneration": {
+              "type": "number"
+            },
+            "toxicSubstances": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "required": [
+        "industrialFeatures"
+      ]
+    },
+    {
+      "properties": {
+        "deviceSpecifications": {
+          "properties": {
+            "deviceCategory": {
+              "const": "professional"
+            }
+          }
+        },
+        "professionalFeatures": {
+          "type": "object",
+          "required": [
+            "technicalSupport",
+            "calibrationRequired",
+            "performanceMetrics"
+          ],
+          "properties": {
+            "technicalSupport": {
+              "type": "string",
+              "description": "Technical support availability"
+            },
+            "calibrationRequired": {
+              "type": "boolean"
+            },
+            "performanceMetrics": {
+              "type": "object"
+            },
+            "softwareCompatibility": {
+              "type": "array"
+            },
+            "networkCapabilities": {
+              "type": "string"
+            }
+          }
+        },
+        "endOfLife": {
+          "properties": {
+            "disassemblyEase": {
+              "type": "boolean"
+            },
+            "componentRecovery": {
+              "type": "boolean"
+            },
+            "refurbishmentPotential": {
+              "type": "string"
+            }
+          }
+        },
+        "environmentalImpact": {
+          "properties": {
+            "manufacturingEmissions": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": [
+        "professionalFeatures"
+      ]
+    }
+  ]
+}

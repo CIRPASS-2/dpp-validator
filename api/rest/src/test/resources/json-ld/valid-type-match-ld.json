@@ -1,0 +1,164 @@
+{
+  "@context": {
+    "@vocab": "http://example.org/vehicle-dpp#",
+    "vdpp": "http://example.org/vehicle-dpp#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "VehicleDPP": "vdpp:VehicleDPP",
+    "vehicleIdentification": {
+      "@id": "vdpp:vehicleIdentification",
+      "@type": "@id"
+    },
+    "vin": "vdpp:vin",
+    "brand": "vdpp:brand",
+    "assembler": {
+      "@id": "vdpp:assembler",
+      "@type": "@id"
+    },
+    "organization": "vdpp:organization",
+    "location": "vdpp:location",
+    "plantId": "vdpp:plantId",
+    "vehicleCharacteristics": {
+      "@id": "vdpp:vehicleCharacteristics",
+      "@type": "@id"
+    },
+    "vehicleType": "vdpp:vehicleType",
+    "mass": {
+      "@id": "vdpp:mass",
+      "@type": "xsd:double"
+    },
+    "engineType": "vdpp:engineType",
+    "productionDate": {
+      "@id": "vdpp:productionDate",
+      "@type": "xsd:date"
+    },
+    "partsInventory": {
+      "@id": "vdpp:partsInventory",
+      "@type": "@id"
+    },
+    "primaryParts": {
+      "@id": "vdpp:primaryParts",
+      "@type": "@id"
+    },
+    "partName": "vdpp:partName",
+    "count": {
+      "@id": "vdpp:count",
+      "@type": "xsd:integer"
+    },
+    "dominantMaterial": "vdpp:dominantMaterial",
+    "operatingInstructions": {
+      "@id": "vdpp:operatingInstructions",
+      "@type": "@id"
+    },
+    "routine": "vdpp:routine",
+    "winterCare": "vdpp:winterCare",
+    "safetyChecks": "vdpp:safetyChecks",
+    "ecologicalFootprint": {
+      "@id": "vdpp:ecologicalFootprint",
+      "@type": "@id"
+    },
+    "fuelConsumption": {
+      "@id": "vdpp:fuelConsumption",
+      "@type": "xsd:double"
+    },
+    "emissions": {
+      "@id": "vdpp:emissions",
+      "@type": "xsd:double"
+    },
+    "lifecycleManagement": {
+      "@id": "vdpp:lifecycleManagement",
+      "@type": "@id"
+    },
+    "serviceability": "vdpp:serviceability",
+    "secondhandValue": {
+      "@id": "vdpp:secondhandValue",
+      "@type": "xsd:double"
+    },
+    "operationalYears": {
+      "@id": "vdpp:operationalYears",
+      "@type": "xsd:double"
+    },
+    "standardsCompliance": {
+      "@id": "vdpp:standardsCompliance",
+      "@type": "@id"
+    },
+    "euro6": {
+      "@id": "vdpp:euro6",
+      "@type": "xsd:boolean"
+    },
+    "safetyRating": "vdpp:safetyRating"
+  },
+  "@type": "VehicleDPP",
+  "@id": "http://example.org/data/vehicle-001",
+  "vehicleIdentification": {
+    "@type": "VehicleIdentification",
+    "@id": "http://example.org/data/vehicle-001-identification",
+    "vin": "WBADT43452G123456",
+    "brand": "BMW",
+    "assembler": {
+      "@type": "Assembler",
+      "@id": "http://example.org/data/assembler-bmw-munich",
+      "organization": "BMW Manufacturing GmbH",
+      "location": "DE",
+      "plantId": "PLANT-MUNICH-001"
+    }
+  },
+  "vehicleCharacteristics": {
+    "@type": "VehicleCharacteristics",
+    "@id": "http://example.org/data/vehicle-001-characteristics",
+    "vehicleType": "sedan",
+    "mass": 1850.5,
+    "engineType": "electric",
+    "productionDate": "2024-06-15"
+  },
+  "partsInventory": {
+    "@type": "PartsInventory",
+    "@id": "http://example.org/data/vehicle-001-parts",
+    "primaryParts": [
+      {
+        "@type": "Part",
+        "@id": "http://example.org/data/part-battery",
+        "partName": "High Voltage Battery Pack",
+        "count": 1
+      },
+      {
+        "@type": "Part",
+        "@id": "http://example.org/data/part-motor",
+        "partName": "Electric Motor",
+        "count": 1
+      },
+      {
+        "@type": "Part",
+        "@id": "http://example.org/data/part-wheels",
+        "partName": "Alloy Wheels",
+        "count": 4
+      }
+    ],
+    "dominantMaterial": "aluminum"
+  },
+  "operatingInstructions": {
+    "@type": "OperatingInstructions",
+    "@id": "http://example.org/data/vehicle-001-instructions",
+    "routine": "Regular maintenance every 12 months or 15,000 km. Check battery health quarterly.",
+    "winterCare": "Preheat battery before charging in temperatures below 0°C. Store in garage when possible.",
+    "safetyChecks": "Weekly: tire pressure, brake fluid level, charging port condition. Monthly: battery cooling system, software updates."
+  },
+  "ecologicalFootprint": {
+    "@type": "EcologicalFootprint",
+    "@id": "http://example.org/data/vehicle-001-ecology",
+    "fuelConsumption": 18.5,
+    "emissions": 0.0
+  },
+  "lifecycleManagement": {
+    "@type": "LifecycleManagement",
+    "@id": "http://example.org/data/vehicle-001-lifecycle",
+    "serviceability": "excellent",
+    "secondhandValue": 68.0,
+    "operationalYears": 15.0
+  },
+  "standardsCompliance": {
+    "@type": "StandardsCompliance",
+    "@id": "http://example.org/data/vehicle-001-standards",
+    "euro6": true,
+    "safetyRating": "5-star Euro NCAP"
+  }
+}

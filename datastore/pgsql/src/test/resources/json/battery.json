@@ -1,0 +1,54 @@
+{
+  "productIdentification": {
+    "batteryUID": "BAT-NMC-2024-EU-00123456",
+    "manufacturer": {
+      "name": "EuroBattery Systems GmbH",
+      "streetName": "Industriestraße 42",
+      "postalCode": "80331",
+      "cityName": "München"
+    }
+  },
+  "generalInformation": {
+    "batteryCategory": "EV",
+    "batteryWeight": 450.5,
+    "manufacturingDate": "2024-03-15",
+    "batteryChemistry": "NMC"
+  },
+  "performance": {
+    "ratedCapacity": 75.5,
+    "nominalVoltage": 400,
+    "energyDensity": 265.3,
+    "powerCapability": 150
+  },
+  "composition": {
+    "cathodeActiveMaterial": {
+      "nickelContent": 0.6,
+      "manganeseContent": 0.2,
+      "cobaltContent": 0.2
+    }
+  },
+  "sustainability": {
+    "carbonFootprint": {
+      "lifeCycleCarbon": 8500.25,
+      "carbonFootprintPerformanceClass": "B"
+    },
+    "criticalRawMaterials": {
+      "nickel": 45.2,
+      "cobalt": 15.8
+    }
+  },
+  "circularity": {
+    "recyclableContent": {
+      "cobalt": 12.5,
+      "lithium": 8.3,
+      "nickel": 38.7,
+      "lead": 0
+    }
+  },
+  "safety": {
+    "safetyInstructions": "Do not expose to temperatures above 60°C. Follow UN38.3 handling procedures."
+  },
+  "dataSource": {
+    "lastUpdate": "2024-03-15T14:30:00Z"
+  }
+}

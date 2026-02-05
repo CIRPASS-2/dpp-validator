@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "productIdentification",
+    "sustainability",
+    "safety"
+  ],
+  "properties": {
+    "productIdentification": {
+      "type": "object",
+      "required": [
+        "batteryUID",
+        "manufacturer"
+      ],
+      "properties": {
+        "batteryUID": {
+          "type": "string",
+          "description": "Unique identifier for the battery"
+        },
+        "manufacturer": {
+          "type": "object",
+          "required": [
+            "name",
+            "streetName",
+            "postalCode",
+            "cityName"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "streetName": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "cityName": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "sustainability": {
+      "type": "object",
+      "required": [
+        "carbonFootprint"
+      ],
+      "properties": {
+        "carbonFootprint": {
+          "type": "object",
+          "required": [
+            "lifeCycleCarbon",
+            "carbonFootprintPerformanceClass"
+          ],
+          "properties": {
+            "lifeCycleCarbon": {
+              "type": "number",
+              "description": "Total carbon footprint in kg CO2 eq"
+            },
+            "carbonFootprintPerformanceClass": {
+              "type": "string",
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+              ]
+            }
+          }
+        },
+        "criticalRawMaterials": {
+          "type": "object",
+          "properties": {
+            "nickel": {
+              "type": "number"
+            },
+            "cobalt": {
+              "type": "number"
+            },
+            "lithium": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "safetyInstructions"
+      ],
+      "properties": {
+        "safetyInstructions": {
+          "type": "string",
+          "description": "Safety and handling instructions"
+        },
+        "thermalStability": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

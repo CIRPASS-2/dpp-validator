@@ -1,0 +1,89 @@
+{
+  "deviceIdentification": {
+    "serialNumber": "XYZABC1234567890",
+    "modelName": "ProTech X500",
+    "manufacturer": {
+      "companyName": "TechCorp Industries",
+      "headquarters": "DE",
+      "facility": "Berlin Manufacturing Plant"
+    }
+  },
+  "deviceSpecifications": {
+    "deviceCategory": "professional",
+    "weight": 2.5,
+    "dimensions": "30x20x5 cm",
+    "releaseYear": 2024
+  },
+  "componentDetails": {
+    "mainComponents": [
+      {
+        "componentName": "lithium-ion battery",
+        "quantity": 1
+      },
+      {
+        "componentName": "OLED display",
+        "quantity": 1
+      },
+      {
+        "componentName": "processor",
+        "quantity": 1
+      }
+    ],
+    "primaryMaterial": "composite",
+    "plasticPercentage": 30,
+    "metalPercentage": 70
+  },
+  "maintenanceGuidelines": {
+    "cleaning": "Use dry cloth only, avoid liquid cleaners",
+    "storage": "Store in temperature range 5-35°C, humidity below 80%",
+    "handling": "Handle with care, avoid dropping or impact",
+    "batteryMaintenance": "Charge every 3 months when not in use",
+    "softwareUpdates": "Check monthly for firmware updates"
+  },
+  "environmentalImpact": {
+    "waterUsage": 150.5,
+    "powerConsumption": 45.0,
+    "hazardousMaterials": [
+      "lead solder",
+      "brominated flame retardants"
+    ],
+    "carbonEmissions": 85.3,
+    "energyStarCertified": true,
+    "conflictMinerals": ["tantalum", "tin"],
+    "manufacturingEmissions": 65.2
+  },
+  "endOfLife": {
+    "repairability": "excellent",
+    "reuseContent": 35.0,
+    "expectedLifespan": 10,
+    "disassemblyEase": true,
+    "componentRecovery": true,
+    "refurbishmentPotential": "high",
+    "upgradeability": "modular components replaceable"
+  },
+  "regulations": {
+    "rohs": true,
+    "weee": true
+  },
+  "professionalFeatures": {
+    "technicalSupport": "24/7 enterprise support with 4-hour SLA",
+    "calibrationRequired": true,
+    "performanceMetrics": {
+      "throughput": "500 operations/second",
+      "accuracy": "99.97%",
+      "uptime": "99.9%"
+    },
+    "softwareCompatibility": [
+      "CAD/CAM systems",
+      "ERP integration",
+      "SCADA protocols"
+    ],
+    "networkCapabilities": "Ethernet, WiFi 6, Bluetooth 5.2, industrial protocols"
+  },
+  "supplyChain": {
+    "battery": {
+      "source": "European supplier certified",
+      "certifications": ["ISO 14001", "Battery Directive compliant"]
+    }
+  }
+}

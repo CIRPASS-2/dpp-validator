@@ -1,0 +1,550 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix edpp: <http://example.org/electronics-dpp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# STRATEGY 3: MINIMAL TARGET CLASSES
+# Solo la shape principale ha targetClass
+# Tutte le altre shape dipendono da matching basato su properties (SIMILARITY_MATCH)
+# Questo forza il sistema a usare vocabulary_uri e required_paths
+
+# Ontology declaration
+<http://example.org/electronics-dpp> a owl:Ontology ;
+    owl:imports <http://example.org/electronics-dpp> .
+
+# Main Electronics DPP Shape - UNICA con targetClass
+edpp:ElectronicsDPPShape
+    a sh:NodeShape ;
+    sh:targetClass edpp:ElectronicsDPP ;
+    sh:property [
+        sh:path edpp:deviceIdentification ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:DeviceIdentificationShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:deviceSpecifications ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:DeviceSpecificationsShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:componentDetails ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:ComponentDetailsShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:maintenanceGuidelines ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:MaintenanceGuidelinesShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:environmentalImpact ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:EnvironmentalImpactShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:endOfLife ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:EndOfLifeShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:regulations ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:RegulationsShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:supplyChain ;
+        sh:maxCount 1 ;
+        sh:node edpp:SupplyChainShape ;
+    ] ;
+    # oneOf constraint: exactly one variant must be present
+    sh:xone (
+        edpp:ConsumerVariantShape
+        edpp:IndustrialVariantShape
+        edpp:ProfessionalVariantShape
+    ) .
+
+# Device Identification Shape - NO targetClass
+edpp:DeviceIdentificationShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:serialNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[A-Z0-9]{10,20}$" ;
+        sh:description "Unique device serial number" ;
+    ] ;
+    sh:property [
+        sh:path edpp:modelName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:manufacturer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:ManufacturerShape ;
+    ] .
+
+# Manufacturer Shape - NO targetClass
+edpp:ManufacturerShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:companyName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:headquarters ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[A-Z]{2}$" ;
+        sh:description "ISO 3166-1 alpha-2 country code" ;
+    ] ;
+    sh:property [
+        sh:path edpp:facility ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Device Specifications Shape - NO targetClass
+edpp:DeviceSpecificationsShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:deviceCategory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("consumer" "industrial" "professional") ;
+    ] ;
+    sh:property [
+        sh:path edpp:weight ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Weight in kilograms" ;
+    ] ;
+    sh:property [
+        sh:path edpp:dimensions ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Dimensions in format WxHxD cm" ;
+    ] ;
+    sh:property [
+        sh:path edpp:releaseYear ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] .
+
+# Component Details Shape - NO targetClass
+edpp:ComponentDetailsShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:mainComponents ;
+        sh:minCount 1 ;
+        sh:node edpp:ComponentShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:primaryMaterial ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("plastic" "metal" "composite") ;
+        sh:description "Dominant material composition" ;
+    ] ;
+    sh:property [
+        sh:path edpp:plasticPercentage ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+    ] ;
+    sh:property [
+        sh:path edpp:metalPercentage ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+    ] .
+
+# Component Shape - NO targetClass
+edpp:ComponentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:componentName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Name of component (e.g., battery, display, processor)" ;
+    ] ;
+    sh:property [
+        sh:path edpp:quantity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+    ] .
+
+# Maintenance Guidelines Shape - NO targetClass
+edpp:MaintenanceGuidelinesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:cleaning ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Cleaning procedures and recommendations" ;
+    ] ;
+    sh:property [
+        sh:path edpp:storage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Storage conditions and requirements" ;
+    ] ;
+    sh:property [
+        sh:path edpp:handling ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Safe handling instructions" ;
+    ] ;
+    sh:property [
+        sh:path edpp:batteryMaintenance ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:softwareUpdates ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Environmental Impact Shape - NO targetClass
+edpp:EnvironmentalImpactShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:waterUsage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Water usage in liters during production" ;
+    ] ;
+    sh:property [
+        sh:path edpp:powerConsumption ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Power consumption in watts during operation" ;
+    ] ;
+    sh:property [
+        sh:path edpp:hazardousMaterials ;
+        sh:minCount 1 ;
+        sh:description "List of hazardous materials present" ;
+    ] ;
+    sh:property [
+        sh:path edpp:carbonEmissions ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Carbon emissions in kg CO2 eq during lifecycle" ;
+    ] ;
+    sh:property [
+        sh:path edpp:energyStarCertified ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path edpp:conflictMinerals ;
+        sh:maxCount 1 ;
+    ] .
+
+# End of Life Shape - NO targetClass
+edpp:EndOfLifeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:repairability ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("excellent" "good" "fair" "poor") ;
+    ] ;
+    sh:property [
+        sh:path edpp:reuseContent ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 100 ;
+        sh:description "Percentage of reused materials" ;
+    ] ;
+    sh:property [
+        sh:path edpp:expectedLifespan ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Expected lifespan in years" ;
+    ] ;
+    sh:property [
+        sh:path edpp:upgradeability ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Regulations Shape - NO targetClass
+edpp:RegulationsShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:rohs ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:description "RoHS compliance (restriction of hazardous substances)" ;
+    ] ;
+    sh:property [
+        sh:path edpp:weee ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:description "WEEE directive compliance" ;
+    ] .
+
+# Supply Chain Shape - NO targetClass
+edpp:SupplyChainShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:battery ;
+        sh:maxCount 1 ;
+        sh:node edpp:BatterySupplyChainShape ;
+    ] .
+
+# Battery Supply Chain Shape - NO targetClass
+edpp:BatterySupplyChainShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:source ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:certifications ;
+        sh:maxCount 1 ;
+    ] .
+
+# Consumer Variant Shape - NO targetClass
+edpp:ConsumerVariantShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:deviceSpecifications ;
+        sh:node [
+            sh:property [
+                sh:path edpp:deviceCategory ;
+                sh:hasValue "consumer" ;
+            ]
+        ]
+    ] ;
+    sh:property [
+        sh:path edpp:consumerFeatures ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:ConsumerFeaturesShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:environmentalImpact ;
+        sh:node [
+            sh:property [
+                sh:path edpp:batteryCapacity ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:double ;
+            ] ;
+            sh:property [
+                sh:path edpp:standbyPower ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:double ;
+            ]
+        ]
+    ] .
+
+# Consumer Features Shape - NO targetClass
+edpp:ConsumerFeaturesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:warrantyPeriod ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:description "Warranty period in months" ;
+    ] ;
+    sh:property [
+        sh:path edpp:userManualLanguages ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path edpp:customerSupport ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:ecoLabel ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path edpp:energyRating ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Industrial Variant Shape - NO targetClass
+edpp:IndustrialVariantShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:deviceSpecifications ;
+        sh:node [
+            sh:property [
+                sh:path edpp:deviceCategory ;
+                sh:hasValue "industrial" ;
+            ]
+        ]
+    ] ;
+    sh:property [
+        sh:path edpp:industrialFeatures ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:IndustrialFeaturesShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:environmentalImpact ;
+        sh:node [
+            sh:property [
+                sh:path edpp:electronicWasteGeneration ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:double ;
+            ] ;
+            sh:property [
+                sh:path edpp:toxicSubstances ;
+                sh:maxCount 1 ;
+            ]
+        ]
+    ] .
+
+# Industrial Features Shape - NO targetClass
+edpp:IndustrialFeaturesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:operatingTemperature ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Operating temperature range" ;
+    ] ;
+    sh:property [
+        sh:path edpp:certifications ;
+        sh:minCount 1 ;
+        sh:description "Industrial certifications" ;
+    ] ;
+    sh:property [
+        sh:path edpp:maintenanceSchedule ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path edpp:dutyCycle ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+    ] ;
+    sh:property [
+        sh:path edpp:meanTimeBetweenFailures ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+    ] .
+
+# Professional Variant Shape - NO targetClass
+edpp:ProfessionalVariantShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:deviceSpecifications ;
+        sh:node [
+            sh:property [
+                sh:path edpp:deviceCategory ;
+                sh:hasValue "professional" ;
+            ]
+        ]
+    ] ;
+    sh:property [
+        sh:path edpp:professionalFeatures ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node edpp:ProfessionalFeaturesShape ;
+    ] ;
+    sh:property [
+        sh:path edpp:endOfLife ;
+        sh:node [
+            sh:property [
+                sh:path edpp:disassemblyEase ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:boolean ;
+            ] ;
+            sh:property [
+                sh:path edpp:componentRecovery ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:boolean ;
+            ] ;
+            sh:property [
+                sh:path edpp:refurbishmentPotential ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:string ;
+            ]
+        ]
+    ] ;
+    sh:property [
+        sh:path edpp:environmentalImpact ;
+        sh:node [
+            sh:property [
+                sh:path edpp:manufacturingEmissions ;
+                sh:maxCount 1 ;
+                sh:datatype xsd:double ;
+            ]
+        ]
+    ] .
+
+# Professional Features Shape - NO targetClass
+edpp:ProfessionalFeaturesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path edpp:technicalSupport ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Technical support availability" ;
+    ] ;
+    sh:property [
+        sh:path edpp:calibrationRequired ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path edpp:performanceMetrics ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path edpp:softwareCompatibility ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path edpp:networkCapabilities ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .

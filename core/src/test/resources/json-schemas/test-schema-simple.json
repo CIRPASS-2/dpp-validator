@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "productIdentification",
+    "generalInformation",
+    "performance",
+    "sustainability",
+    "circularity",
+    "safety",
+    "dataSource"
+  ],
+  "properties": {
+    "productIdentification": {
+      "type": "object",
+      "required": [
+        "batteryUID",
+        "manufacturer"
+      ],
+      "properties": {
+        "batteryUID": {
+          "type": "string",
+          "description": "Unique identifier for the battery"
+        },
+        "manufacturer": {
+          "type": "object",
+          "required": [
+            "name",
+            "streetName",
+            "postalCode",
+            "cityName"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "streetName": {
+              "type": "string"
+            },
+            "postalCode": {
+              "type": "string"
+            },
+            "cityName": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "generalInformation": {
+      "type": "object",
+      "required": [
+        "batteryCategory",
+        "batteryWeight",
+        "manufacturingDate"
+      ],
+      "properties": {
+        "batteryCategory": {
+          "type": "string",
+          "enum": [
+            "LMT",
+            "EV",
+            "Industrial",
+            "SLI"
+          ],
+          "description": "LMT=Light Means of Transport, EV=Electric Vehicle, SLI=Starting Lighting Ignition"
+        },
+        "batteryWeight": {
+          "type": "number",
+          "description": "Total weight in kilograms"
+        },
+        "manufacturingDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "batteryChemistry": {
+          "type": "string",
+          "description": "Battery chemistry type (e.g., NMC, LFP, NCA)"
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "required": [
+        "ratedCapacity",
+        "nominalVoltage"
+      ],
+      "properties": {
+        "ratedCapacity": {
+          "type": "number",
+          "description": "Capacity in Ah"
+        },
+        "nominalVoltage": {
+          "type": "number",
+          "description": "Voltage in V"
+        },
+        "powerCapability": {
+          "type": "number",
+          "description": "Power in W"
+        },
+        "internalResistance": {
+          "type": "number"
+        },
+        "roundTripEfficiency": {
+          "type": "number"
+        }
+      }
+    },
+    "sustainability": {
+      "type": "object",
+      "required": [
+        "carbonFootprint"
+      ],
+      "properties": {
+        "carbonFootprint": {
+          "type": "object",
+          "required": [
+            "lifeCycleCarbon",
+            "carbonFootprintPerformanceClass"
+          ],
+          "properties": {
+            "lifeCycleCarbon": {
+              "type": "number",
+              "description": "Total carbon footprint in kg CO2 eq"
+            },
+            "carbonFootprintPerformanceClass": {
+              "type": "string",
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+              ]
+            }
+          }
+        },
+        "criticalRawMaterials": {
+          "type": "object",
+          "properties": {
+            "nickel": {
+              "type": "number"
+            },
+            "cobalt": {
+              "type": "number"
+            },
+            "lithium": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "circularity": {
+      "type": "object",
+      "required": [
+        "recyclableContent"
+      ],
+      "properties": {
+        "recyclableContent": {
+          "type": "object",
+          "required": [
+            "cobalt",
+            "lithium",
+            "nickel",
+            "lead"
+          ],
+          "properties": {
+            "cobalt": {
+              "type": "number",
+              "description": "Percentage of recycled cobalt"
+            },
+            "lithium": {
+              "type": "number",
+              "description": "Percentage of recycled lithium"
+            },
+            "nickel": {
+              "type": "number",
+              "description": "Percentage of recycled nickel"
+            },
+            "lead": {
+              "type": "number",
+              "description": "Percentage of recycled lead"
+            }
+          }
+        },
+        "dismantlingInstructions": {
+          "type": "string"
+        },
+        "spareParts": {
+          "type": "array"
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "safetyInstructions"
+      ],
+      "properties": {
+        "safetyInstructions": {
+          "type": "string",
+          "description": "Safety and handling instructions"
+        },
+        "thermalStability": {
+          "type": "number"
+        }
+      }
+    },
+    "dataSource": {
+      "type": "object",
+      "required": [
+        "lastUpdate"
+      ],
+      "properties": {
+        "lastUpdate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dataProvider": {
+          "type": "string"
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "cathodeActiveMaterial": {
+          "type": "object",
+          "properties": {
+            "nickelContent": {
+              "type": "number"
+            },
+            "manganeseContent": {
+              "type": "number"
+            },
+            "cobaltContent": {
+              "type": "number"
+            },
+            "ironContent": {
+              "type": "number"
+            },
+            "phosphateContent": {
+              "type": "number"
+            },
+            "aluminumContent": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vdpp: <http://example.org/vehicle-dpp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# STRATEGY 1: ALL TARGET CLASSES DEFINED
+# Ogni NodeShape ha il proprio targetClass per permettere matching diretto
+
+# Ontology declaration
+<http://example.org/vehicle-dpp> a owl:Ontology ;
+    owl:imports <http://example.org/vehicle-dpp> .
+
+# Main Vehicle DPP Shape
+vdpp:VehicleDPPShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:VehicleDPP ;
+    sh:property [
+        sh:path vdpp:vehicleIdentification ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:VehicleIdentificationShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:vehicleCharacteristics ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:VehicleCharacteristicsShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:partsInventory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:PartsInventoryShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:operatingInstructions ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:OperatingInstructionsShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:ecologicalFootprint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:EcologicalFootprintShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:lifecycleManagement ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:LifecycleManagementShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:standardsCompliance ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:StandardsComplianceShape ;
+    ] .
+
+# Vehicle Identification Shape
+vdpp:VehicleIdentificationShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:VehicleIdentification ;
+    sh:property [
+        sh:path vdpp:vin ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[A-HJ-NPR-Z0-9]{17}$" ;
+        sh:description "Vehicle Identification Number" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:brand ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path vdpp:assembler ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node vdpp:AssemblerShape ;
+    ] .
+
+# Assembler Shape
+vdpp:AssemblerShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:Assembler ;
+    sh:property [
+        sh:path vdpp:organization ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path vdpp:location ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[A-Z]{2}$" ;
+        sh:description "ISO 3166-1 alpha-2 country code" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:plantId ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Vehicle Characteristics Shape
+vdpp:VehicleCharacteristicsShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:VehicleCharacteristics ;
+    sh:property [
+        sh:path vdpp:vehicleType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("sedan" "suv" "truck" "van" "motorcycle" "bus") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:mass ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Vehicle mass in kilograms" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:engineType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("electric" "hybrid" "diesel" "gasoline" "hydrogen") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:productionDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+    ] .
+
+# Parts Inventory Shape
+vdpp:PartsInventoryShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:PartsInventory ;
+    sh:property [
+        sh:path vdpp:primaryParts ;
+        sh:minCount 1 ;
+        sh:node vdpp:PartShape ;
+    ] ;
+    sh:property [
+        sh:path vdpp:dominantMaterial ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("steel" "aluminum" "carbonFiber" "mixed") ;
+    ] .
+
+# Part Shape
+vdpp:PartShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:Part ;
+    sh:property [
+        sh:path vdpp:partName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path vdpp:count ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+    ] .
+
+# Operating Instructions Shape
+vdpp:OperatingInstructionsShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:OperatingInstructions ;
+    sh:property [
+        sh:path vdpp:routine ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Regular maintenance instructions" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:winterCare ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Cold weather operating guidelines" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:safetyChecks ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Pre-operation safety inspection procedures" ;
+    ] .
+
+# Ecological Footprint Shape
+vdpp:EcologicalFootprintShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:EcologicalFootprint ;
+    sh:property [
+        sh:path vdpp:fuelConsumption ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Fuel consumption in liters per 100km or kWh per 100km" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:emissions ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "CO2 emissions in g/km" ;
+    ] .
+
+# Lifecycle Management Shape
+vdpp:LifecycleManagementShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:LifecycleManagement ;
+    sh:property [
+        sh:path vdpp:serviceability ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("excellent" "good" "moderate" "difficult") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:secondhandValue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 100 ;
+        sh:description "Percentage of residual value after use" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:operationalYears ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Expected operational lifespan in years" ;
+    ] .
+
+# Standards Compliance Shape
+vdpp:StandardsComplianceShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:StandardsCompliance ;
+    sh:property [
+        sh:path vdpp:euro6 ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:description "EURO 6 emissions standard compliance" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:safetyRating ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Safety rating (e.g., 5-star NCAP)" ;
+    ] .
+
+# Sensor Reading Shape (for pattern properties sensor_*)
+vdpp:SensorReadingShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:SensorReading ;
+    sh:property [
+        sh:path vdpp:reading ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Sensor reading value" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:unit ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Unit of measurement" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:timestamp ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime ;
+        sh:description "Reading timestamp" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:accuracy ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Measurement accuracy percentage" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:calibrationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+    ] .
+
+# Metric Shape (for pattern properties metric_*)
+vdpp:MetricShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:Metric ;
+    sh:property [
+        sh:path vdpp:value ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Performance metric value" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:threshold ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:double ;
+        sh:description "Acceptable threshold" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:status ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("normal" "warning" "critical") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:lastUpdated ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime ;
+    ] .
+
+# Certification Shape (for pattern properties certification_*)
+vdpp:CertificationShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:Certification ;
+    sh:property [
+        sh:path vdpp:issuedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:description "Certification authority" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:validUntil ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:description "Expiration date" ;
+    ] ;
+    sh:property [
+        sh:path vdpp:status ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("valid" "expired" "revoked") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:documentUrl ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path vdpp:verificationCode ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Test Shape (for pattern properties test_*)
+vdpp:TestShape
+    a sh:NodeShape ;
+    sh:targetClass vdpp:Test ;
+    sh:property [
+        sh:path vdpp:result ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("passed" "failed" "conditional") ;
+    ] ;
+    sh:property [
+        sh:path vdpp:date ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+    ] ;
+    sh:property [
+        sh:path vdpp:inspector ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path vdpp:notes ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path vdpp:nextTestDue ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+    ] .

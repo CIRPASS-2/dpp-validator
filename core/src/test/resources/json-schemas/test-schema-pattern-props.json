@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "vehicleIdentification",
+    "vehicleCharacteristics",
+    "partsInventory",
+    "operatingInstructions",
+    "ecologicalFootprint",
+    "lifecycleManagement",
+    "standardsCompliance"
+  ],
+  "properties": {
+    "vehicleIdentification": {
+      "type": "object",
+      "required": [
+        "vin",
+        "brand",
+        "assembler"
+      ],
+      "properties": {
+        "vin": {
+          "type": "string",
+          "pattern": "^[A-HJ-NPR-Z0-9]{17}$",
+          "description": "Vehicle Identification Number"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "assembler": {
+          "type": "object",
+          "required": [
+            "organization",
+            "location"
+          ],
+          "properties": {
+            "organization": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$",
+              "description": "ISO 3166-1 alpha-2 country code"
+            },
+            "plantId": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vehicleCharacteristics": {
+      "type": "object",
+      "required": [
+        "vehicleType",
+        "mass",
+        "engineType"
+      ],
+      "properties": {
+        "vehicleType": {
+          "type": "string",
+          "enum": [
+            "sedan",
+            "suv",
+            "truck",
+            "van",
+            "motorcycle",
+            "bus"
+          ]
+        },
+        "mass": {
+          "type": "number",
+          "description": "Vehicle mass in kilograms"
+        },
+        "engineType": {
+          "type": "string",
+          "enum": [
+            "electric",
+            "hybrid",
+            "diesel",
+            "gasoline",
+            "hydrogen"
+          ]
+        },
+        "productionDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "partsInventory": {
+      "type": "object",
+      "required": [
+        "primaryParts"
+      ],
+      "properties": {
+        "primaryParts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "partName",
+              "count"
+            ],
+            "properties": {
+              "partName": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "dominantMaterial": {
+          "type": "string",
+          "enum": [
+            "steel",
+            "aluminum",
+            "carbonFiber",
+            "mixed"
+          ]
+        }
+      }
+    },
+    "operatingInstructions": {
+      "type": "object",
+      "required": [
+        "routine",
+        "winterCare",
+        "safetyChecks"
+      ],
+      "properties": {
+        "routine": {
+          "type": "string",
+          "description": "Regular maintenance instructions"
+        },
+        "winterCare": {
+          "type": "string",
+          "description": "Cold weather operating guidelines"
+        },
+        "safetyChecks": {
+          "type": "string",
+          "description": "Pre-operation safety inspection procedures"
+        }
+      }
+    },
+    "ecologicalFootprint": {
+      "type": "object",
+      "required": [
+        "fuelConsumption",
+        "emissions"
+      ],
+      "properties": {
+        "fuelConsumption": {
+          "type": "number",
+          "description": "Fuel consumption in liters per 100km or kWh per 100km"
+        },
+        "emissions": {
+          "type": "number",
+          "description": "CO2 emissions in g/km"
+        }
+      }
+    },
+    "lifecycleManagement": {
+      "type": "object",
+      "required": [
+        "serviceability",
+        "secondhandValue",
+        "operationalYears"
+      ],
+      "properties": {
+        "serviceability": {
+          "type": "string",
+          "enum": [
+            "excellent",
+            "good",
+            "moderate",
+            "difficult"
+          ]
+        },
+        "secondhandValue": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of residual value after use"
+        },
+        "operationalYears": {
+          "type": "number",
+          "description": "Expected operational lifespan in years"
+        }
+      }
+    },
+    "standardsCompliance": {
+      "type": "object",
+      "required": [
+        "euro6",
+        "safetyRating"
+      ],
+      "properties": {
+        "euro6": {
+          "type": "boolean",
+          "description": "EURO 6 emissions standard compliance"
+        },
+        "safetyRating": {
+          "type": "string",
+          "description": "Safety rating (e.g., 5-star NCAP)"
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^sensor_[a-z0-9_]+$": {
+      "type": "object",
+      "required": [
+        "reading",
+        "unit",
+        "timestamp"
+      ],
+      "properties": {
+        "reading": {
+          "type": "number",
+          "description": "Sensor reading value"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Reading timestamp"
+        },
+        "accuracy": {
+          "type": "number",
+          "description": "Measurement accuracy percentage"
+        },
+        "calibrationDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "^metric_[a-z0-9_]+$": {
+      "type": "object",
+      "required": [
+        "value",
+        "threshold"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Performance metric value"
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Acceptable threshold"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "warning",
+            "critical"
+          ]
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "^certification_[a-z0-9_]+$": {
+      "type": "object",
+      "required": [
+        "issuedBy",
+        "validUntil",
+        "status"
+      ],
+      "properties": {
+        "issuedBy": {
+          "type": "string",
+          "description": "Certification authority"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date",
+          "description": "Expiration date"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "valid",
+            "expired",
+            "revoked"
+          ]
+        },
+        "documentUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "verificationCode": {
+          "type": "string"
+        }
+      }
+    },
+    "^test_[a-z0-9_]+$": {
+      "type": "object",
+      "required": [
+        "result",
+        "date",
+        "inspector"
+      ],
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "conditional"
+          ]
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "inspector": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "nextTestDue": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}

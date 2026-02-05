@@ -1,0 +1,63 @@
+{
+  "productIdentification": {
+    "GTIN": 4062859126788,
+    "productName": "EcoWear Premium T-Shirt",
+    "manufacturer": {
+      "name": "Sustainable Fashion Co.",
+      "country": "Portugal"
+    }
+  },
+  "productInformation": {
+    "garmentType": "t-shirt",
+    "size": "M",
+    "color": "navy blue"
+  },
+  "materialComposition": {
+    "fibers": {
+      "cotton": 95,
+      "elastane": 5
+    },
+    "primaryFiberType": "natural"
+  },
+  "careInstructions": {
+    "washing": "Machine wash at 30°C",
+    "drying": "Tumble dry low",
+    "ironing": "Iron at medium temperature"
+  },
+  "sustainability": {
+    "waterConsumption": "very high - approximately 2700 liters",
+    "energyConsumption": true,
+    "chemicalSubstances": [
+      "optical brighteners",
+      "formaldehyde",
+      "azo dyes"
+    ],
+    "greenhouseGasEmissions": 5.8,
+    "organicCertification": "GOTS",
+    "pesticideUse": 0,
+    "landUse": 2.5,
+    "biodiversity": "high impact on pollinator species"
+  },
+  "traceability": {
+    "cotton": {
+      "origin": "Organic farms in Turkey and Greece",
+      "certifications": [
+        "GOTS",
+        "OCS 100"
+      ]
+    }
+  },
+  "circularity": {
+    "recyclability": "mechanically recyclable if pure cotton",
+    "recycledContent": "15 percent",
+    "durability": [
+      7,
+      8,
+      9
+    ]
+  },
+  "compliance": {
+    "reach": "compliant",
+    "textileLabeling": 1
+  }
+}

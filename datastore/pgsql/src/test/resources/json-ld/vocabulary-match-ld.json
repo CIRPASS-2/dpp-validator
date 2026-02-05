@@ -1,0 +1,208 @@
+{
+  "@context": {
+    "@vocab": "http://example.org/electronics-dpp#",
+    "edpp": "http://example.org/electronics-dpp#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "deviceIdentification": {
+      "@id": "edpp:deviceIdentification",
+      "@type": "@id"
+    },
+    "serialNumber": "edpp:serialNumber",
+    "modelName": "edpp:modelName",
+    "manufacturer": {
+      "@id": "edpp:manufacturer",
+      "@type": "@id"
+    },
+    "companyName": "edpp:companyName",
+    "headquarters": "edpp:headquarters",
+    "facility": "edpp:facility",
+    "deviceSpecifications": {
+      "@id": "edpp:deviceSpecifications",
+      "@type": "@id"
+    },
+    "deviceCategory": "edpp:deviceCategory",
+    "weight": "edpp:weight",
+    "dimensions": "edpp:dimensions",
+    "releaseYear": {
+      "@id": "edpp:releaseYear",
+      "@type": "xsd:integer"
+    },
+    "componentDetails": {
+      "@id": "edpp:componentDetails",
+      "@type": "@id"
+    },
+    "mainComponents": {
+      "@id": "edpp:mainComponents",
+      "@type": "@id"
+    },
+    "componentName": "edpp:componentName",
+    "quantity": {
+      "@id": "edpp:quantity",
+      "@type": "xsd:integer"
+    },
+    "primaryMaterial": "edpp:primaryMaterial",
+    "plasticPercentage": "edpp:plasticPercentage",
+    "metalPercentage": "edpp:metalPercentage",
+    "maintenanceGuidelines": {
+      "@id": "edpp:maintenanceGuidelines",
+      "@type": "@id"
+    },
+    "cleaning": "edpp:cleaning",
+    "storage": "edpp:storage",
+    "handling": "edpp:handling",
+    "batteryMaintenance": "edpp:batteryMaintenance",
+    "softwareUpdates": "edpp:softwareUpdates",
+    "environmentalImpact": {
+      "@id": "edpp:environmentalImpact",
+      "@type": "@id"
+    },
+    "waterUsage": "edpp:waterUsage",
+    "powerConsumption": "edpp:powerConsumption",
+    "hazardousMaterials": "edpp:hazardousMaterials",
+    "carbonEmissions": "edpp:carbonEmissions",
+    "energyStarCertified": {
+      "@id": "edpp:energyStarCertified",
+      "@type": "xsd:boolean"
+    },
+    "batteryCapacity": "edpp:batteryCapacity",
+    "standbyPower": "edpp:standbyPower",
+    "endOfLife": {
+      "@id": "edpp:endOfLife",
+      "@type": "@id"
+    },
+    "repairability": "edpp:repairability",
+    "reuseContent": "edpp:reuseContent",
+    "expectedLifespan": "edpp:expectedLifespan",
+    "disassemblyEase": {
+      "@id": "edpp:disassemblyEase",
+      "@type": "xsd:boolean"
+    },
+    "componentRecovery": {
+      "@id": "edpp:componentRecovery",
+      "@type": "xsd:boolean"
+    },
+    "refurbishmentPotential": "edpp:refurbishmentPotential",
+    "regulations": {
+      "@id": "edpp:regulations",
+      "@type": "@id"
+    },
+    "rohs": {
+      "@id": "edpp:rohs",
+      "@type": "xsd:boolean"
+    },
+    "weee": {
+      "@id": "edpp:weee",
+      "@type": "xsd:boolean"
+    },
+    "consumerFeatures": {
+      "@id": "edpp:consumerFeatures",
+      "@type": "@id"
+    },
+    "warrantyPeriod": {
+      "@id": "edpp:warrantyPeriod",
+      "@type": "xsd:integer"
+    },
+    "userManualLanguages": "edpp:userManualLanguages",
+    "customerSupport": "edpp:customerSupport",
+    "ecoLabel": {
+      "@id": "edpp:ecoLabel",
+      "@type": "xsd:boolean"
+    },
+    "energyRating": "edpp:energyRating"
+  },
+  "@id": "http://example.org/data/device-001",
+  "deviceIdentification": {
+    "@id": "http://example.org/data/device-001-id",
+    "serialNumber": "SN2024LAPTOP12345",
+    "modelName": "EcoBook Pro 15",
+    "manufacturer": {
+      "@id": "http://example.org/data/manufacturer-techcorp",
+      "companyName": "TechCorp International",
+      "headquarters": "DE",
+      "facility": "Munich Production Plant"
+    }
+  },
+  "deviceSpecifications": {
+    "@id": "http://example.org/data/device-001-specs",
+    "deviceCategory": "consumer",
+    "weight": 1.85,
+    "dimensions": "35.6 x 24.2 x 1.8 cm",
+    "releaseYear": 2024
+  },
+  "componentDetails": {
+    "@id": "http://example.org/data/device-001-components",
+    "mainComponents": [
+      {
+        "@id": "http://example.org/data/component-display",
+        "componentName": "15-inch LCD Display",
+        "quantity": 1
+      },
+      {
+        "@id": "http://example.org/data/component-battery",
+        "componentName": "Lithium-Ion Battery Pack",
+        "quantity": 1
+      },
+      {
+        "@id": "http://example.org/data/component-processor",
+        "componentName": "Intel Core i7 Processor",
+        "quantity": 1
+      },
+      {
+        "@id": "http://example.org/data/component-memory",
+        "componentName": "16GB DDR4 RAM",
+        "quantity": 2
+      },
+      {
+        "@id": "http://example.org/data/component-storage",
+        "componentName": "512GB NVMe SSD",
+        "quantity": 1
+      }
+    ],
+    "primaryMaterial": "metal",
+    "plasticPercentage": 15.5,
+    "metalPercentage": 78.2
+  },
+  "maintenanceGuidelines": {
+    "@id": "http://example.org/data/device-001-maintenance",
+    "cleaning": "Use a soft, lint-free cloth slightly dampened with water. Do not use aerosol sprays, solvents, or abrasives. Clean vents monthly with compressed air.",
+    "storage": "Store in a cool, dry place at temperatures between 10°C and 35°C. Keep away from direct sunlight and moisture. Store with 50% battery charge for long-term storage.",
+    "handling": "Always handle with clean, dry hands. Avoid dropping or applying excessive pressure to the screen. Transport in a protective case.",
+    "batteryMaintenance": "Charge battery when it drops below 20%. Avoid leaving plugged in continuously. Perform full discharge/recharge cycle monthly.",
+    "softwareUpdates": "Enable automatic updates or check monthly for security patches and feature updates via the system settings menu."
+  },
+  "environmentalImpact": {
+    "@id": "http://example.org/data/device-001-environmental",
+    "waterUsage": 245.0,
+    "powerConsumption": 65.0,
+    "hazardousMaterials": [
+      "Lead (trace amounts in solder)",
+      "Mercury (in LCD backlight - below RoHS limits)"
+    ],
+    "carbonEmissions": 285.5,
+    "energyStarCertified": true,
+    "batteryCapacity": 60.0,
+    "standbyPower": 0.8
+  },
+  "endOfLife": {
+    "@id": "http://example.org/data/device-001-endoflife",
+    "repairability": "good",
+    "reuseContent": 35.0,
+    "expectedLifespan": 6.0,
+    "disassemblyEase": true,
+    "componentRecovery": true,
+    "refurbishmentPotential": "high"
+  },
+  "regulations": {
+    "@id": "http://example.org/data/device-001-regulations",
+    "rohs": true,
+    "weee": true
+  },
+  "consumerFeatures": {
+    "@id": "http://example.org/data/device-001-consumer",
+    "warrantyPeriod": 24,
+    "userManualLanguages": ["en", "de", "fr", "es", "it"],
+    "customerSupport": "24/7 phone support and online chat available in multiple languages. Email support with 24-hour response time.",
+    "ecoLabel": true,
+    "energyRating": "A+"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "vehicleIdentification": {
+    "vin": "WBADT43452G296706",
+    "brand": "EcoMotors",
+    "assembler": {
+      "organization": "EcoMotors Manufacturing GmbH",
+      "location": "DE",
+      "plantId": "EMG-001-Stuttgart"
+    }
+  },
+  "vehicleCharacteristics": {
+    "vehicleType": "sedan",
+    "mass": 1650.5,
+    "engineType": "hybrid",
+    "productionDate": "2024-01-15"
+  },
+  "partsInventory": {
+    "primaryParts": [
+      {
+        "partName": "electric motor",
+        "count": 1
+      },
+      {
+        "partName": "lithium-ion battery pack",
+        "count": 1
+      },
+      {
+        "partName": "combustion engine",
+        "count": 1
+      },
+      {
+        "partName": "transmission system",
+        "count": 1
+      },
+      {
+        "partName": "wheel assembly",
+        "count": 4
+      }
+    ],
+    "dominantMaterial": "aluminum"
+  },
+  "operatingInstructions": {
+    "routine": "Service every 15,000 km or 12 months. Check oil, filters, brake fluid, and tire pressure regularly.",
+    "winterCare": "Use winter tires below 7°C. Preheat battery in cold weather. Keep battery charge above 20% in freezing conditions.",
+    "safetyChecks": "Inspect brake pads, tire tread depth (min 3mm), all lights functional, windshield wipers, battery health indicator before each long journey."
+  },
+  "ecologicalFootprint": {
+    "fuelConsumption": 4.2,
+    "emissions": 95.0
+  },
+  "lifecycleManagement": {
+    "serviceability": "excellent",
+    "secondhandValue": 65.0,
+    "operationalYears": 15
+  },
+  "standardsCompliance": {
+    "euro6": true,
+    "safetyRating": "5-star Euro NCAP"
+  },
+  "sensor_temperature_engine": {
+    "reading": 87.5,
+    "unit": "celsius",
+    "timestamp": "2024-02-04T10:30:00Z",
+    "accuracy": 98.5,
+    "calibrationDate": "2024-01-01"
+  },
+  "sensor_pressure_tire_front_left": {
+    "reading": 2.2,
+    "unit": "bar",
+    "timestamp": "2024-02-04T10:30:00Z",
+    "accuracy": 99.0,
+    "calibrationDate": "2024-01-15"
+  },
+  "sensor_pressure_tire_front_right": {
+    "reading": 2.3,
+    "unit": "bar",
+    "timestamp": "2024-02-04T10:30:00Z",
+    "accuracy": 99.0,
+    "calibrationDate": "2024-01-15"
+  },
+  "sensor_battery_voltage": {
+    "reading": 396.8,
+    "unit": "volts",
+    "timestamp": "2024-02-04T10:30:00Z",
+    "accuracy": 99.8,
+    "calibrationDate": "2024-01-10"
+  },
+  "sensor_speed": {
+    "reading": 0,
+    "unit": "km/h",
+    "timestamp": "2024-02-04T10:30:00Z",
+    "accuracy": 99.5
+  },
+  "metric_fuel_efficiency": {
+    "value": 5.8,
+    "threshold": 7.0,
+    "status": "normal",
+    "lastUpdated": "2024-02-04T10:00:00Z"
+  },
+  "metric_battery_health": {
+    "value": 94.5,
+    "threshold": 80.0,
+    "status": "normal",
+    "lastUpdated": "2024-02-04T09:00:00Z"
+  },
+  "metric_regenerative_braking_efficiency": {
+    "value": 87.2,
+    "threshold": 75.0,
+    "status": "normal",
+    "lastUpdated": "2024-02-04T10:30:00Z"
+  },
+  "certification_iso9001": {
+    "issuedBy": "TÜV SÜD",
+    "validUntil": "2026-12-31",
+    "status": "valid",
+    "documentUrl": "https://certificates.tuvsud.com/iso9001/EMG001",
+    "verificationCode": "TUV-ISO9001-2024-001234"
+  },
+  "certification_iso14001": {
+    "issuedBy": "Bureau Veritas",
+    "validUntil": "2025-06-30",
+    "status": "valid",
+    "documentUrl": "https://certificates.bureauveritas.com/iso14001/EMG001",
+    "verificationCode": "BV-ISO14001-2023-005678"
+  },
+  "certification_euro6": {
+    "issuedBy": "German Federal Motor Transport Authority",
+    "validUntil": "2029-01-15",
+    "status": "valid",
+    "verificationCode": "KBA-E6-2024-DE-9876"
+  },
+  "test_emissions_euro6": {
+    "result": "passed",
+    "date": "2024-01-15",
+    "inspector": "Hans Mueller",
+    "notes": "All emission values within Euro 6 limits. NOx: 45 mg/km, PM: 2.1 mg/km",
+    "nextTestDue": "2026-01-15"
+  },
+  "test_safety_crash": {
+    "result": "passed",
+    "date": "2024-01-10",
+    "inspector": "Euro NCAP Team",
+    "notes": "Adult occupant: 95%, Child occupant: 89%, Pedestrian: 82%, Safety assist: 94%"
+  },
+  "test_battery_performance": {
+    "result": "passed",
+    "date": "2024-01-12",
+    "inspector": "Battery Test Lab GmbH",
+    "notes": "Capacity retention: 98.5%, No thermal runaway detected, Charge cycles tested: 1000",
+    "nextTestDue": "2025-01-12"
+  },
+  "test_durability_road": {
+    "result": "passed",
+    "date": "2024-01-08",
+    "inspector": "Vehicle Testing Institute",
+    "notes": "Completed 50,000 km accelerated durability testing. No major component failures."
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "@context": {
+    "@vocab": "http://example.org/vehicle-dpp#",
+    "vdpp": "http://example.org/vehicle-dpp#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "VehicleDPP": "vdpp:VehicleDPP",
+    "vehicleIdentification": {
+      "@id": "vdpp:vehicleIdentification",
+      "@type": "@id"
+    },
+    "vin": "vdpp:vin",
+    "brand": "vdpp:brand",
+    "assembler": {
+      "@id": "vdpp:assembler",
+      "@type": "@id"
+    },
+    "organization": "vdpp:organization",
+    "location": "vdpp:location",
+    "plantId": "vdpp:plantId",
+    "vehicleCharacteristics": {
+      "@id": "vdpp:vehicleCharacteristics",
+      "@type": "@id"
+    },
+    "vehicleType": "vdpp:vehicleType",
+    "mass": {
+      "@id": "vdpp:mass",
+      "@type": "xsd:decimal"
+    },
+    "engineType": "vdpp:engineType",
+    "productionDate": {
+      "@id": "vdpp:productionDate",
+      "@type": "xsd:date"
+    },
+    "partsInventory": {
+      "@id": "vdpp:partsInventory",
+      "@type": "@id"
+    },
+    "primaryParts": {
+      "@id": "vdpp:primaryParts",
+      "@type": "@id"
+    },
+    "partName": "vdpp:partName",
+    "count": {
+      "@id": "vdpp:count",
+      "@type": "xsd:integer"
+    },
+    "dominantMaterial": "vdpp:dominantMaterial",
+    "operatingInstructions": {
+      "@id": "vdpp:operatingInstructions",
+      "@type": "@id"
+    },
+    "routine": "vdpp:routine",
+    "winterCare": "vdpp:winterCare",
+    "safetyChecks": "vdpp:safetyChecks",
+    "ecologicalFootprint": {
+      "@id": "vdpp:ecologicalFootprint",
+      "@type": "@id"
+    },
+    "fuelConsumption": {
+      "@id": "vdpp:fuelConsumption",
+      "@type": "xsd:double"
+    },
+    "emissions": {
+      "@id": "vdpp:emissions",
+      "@type": "xsd:double"
+    },
+    "lifecycleManagement": {
+      "@id": "vdpp:lifecycleManagement",
+      "@type": "@id"
+    },
+    "serviceability": "vdpp:serviceability",
+    "secondhandValue": {
+      "@id": "vdpp:secondhandValue",
+      "@type": "xsd:double"
+    },
+    "operationalYears": {
+      "@id": "vdpp:operationalYears",
+      "@type": "xsd:double"
+    },
+    "standardsCompliance": {
+      "@id": "vdpp:standardsCompliance",
+      "@type": "@id"
+    },
+    "euro6": {
+      "@id": "vdpp:euro6",
+      "@type": "xsd:boolean"
+    },
+    "safetyRating": "vdpp:safetyRating"
+  },
+  "vehicleCharacteristics": {
+    "@type": "VehicleCharacteristics",
+    "@id": "http://example.org/data/vehicle-001-characteristics",
+    "vehicleType": "sedan",
+    "mass": 1850.5,
+    "engineType": "electric",
+    "productionDate": "2024-06-15"
+  },
+  "lifecycleManagement": {
+    "@type": "LifecycleManagement",
+    "@id": "http://example.org/data/vehicle-001-lifecycle",
+    "serviceability": "excellent",
+    "secondhandValue": 68.0,
+    "operationalYears": 15.0
+  }
+}
