@@ -1,0 +1,13 @@
+name: 'DPP Validator Test'
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  shared-job:
+    uses: CIRPASS-2/actions/.github/workflows/quarkus-test.yml@main
+    with:
+      java_version: '21'
+      java_distribution: 'temurin'
+      maven_version: '3.9.6'

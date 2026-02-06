@@ -1,0 +1,19 @@
+name: 'DPP Validator Build Release'
+
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  pgsql-oidc:
+    uses: CIRPASS-2/actions/.github/workflows/quarkus-build-release.yml@main
+    with:
+      java_version: '21'
+      java_distribution: 'temurin'
+      maven_version: '3.9.6'
+      image_name: '${{ github.repository }}'
+      image_tag: '${{ github.ref_name }}'
+      image_registry: 'ghcr.io'
+      dockerfile_path: './main/src/main/docker/Dockerfile.jvm'
+      profile_maven: 'pgsql-oidc'
+      target_maven_path: './main/target/'
