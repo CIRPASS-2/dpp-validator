@@ -5,16 +5,9 @@
 @prefix edpp: <http://example.org/electronics-dpp#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-# STRATEGY 3: MINIMAL TARGET CLASSES
-# Solo la shape principale ha targetClass
-# Tutte le altre shape dipendono da matching basato su properties (SIMILARITY_MATCH)
-# Questo forza il sistema a usare vocabulary_uri e required_paths
-
-# Ontology declaration
 <http://example.org/electronics-dpp> a owl:Ontology ;
     owl:imports <http://example.org/electronics-dpp> .
 
-# Main Electronics DPP Shape - UNICA con targetClass
 edpp:ElectronicsDPPShape
     a sh:NodeShape ;
     sh:targetClass edpp:ElectronicsDPP ;
@@ -65,14 +58,12 @@ edpp:ElectronicsDPPShape
         sh:maxCount 1 ;
         sh:node edpp:SupplyChainShape ;
     ] ;
-    # oneOf constraint: exactly one variant must be present
     sh:xone (
         edpp:ConsumerVariantShape
         edpp:IndustrialVariantShape
         edpp:ProfessionalVariantShape
     ) .
 
-# Device Identification Shape - NO targetClass
 edpp:DeviceIdentificationShape
     a sh:NodeShape ;
     sh:property [
@@ -96,7 +87,6 @@ edpp:DeviceIdentificationShape
         sh:node edpp:ManufacturerShape ;
     ] .
 
-# Manufacturer Shape - NO targetClass
 edpp:ManufacturerShape
     a sh:NodeShape ;
     sh:property [
@@ -119,7 +109,6 @@ edpp:ManufacturerShape
         sh:datatype xsd:string ;
     ] .
 
-# Device Specifications Shape - NO targetClass
 edpp:DeviceSpecificationsShape
     a sh:NodeShape ;
     sh:property [
@@ -149,7 +138,6 @@ edpp:DeviceSpecificationsShape
         sh:datatype xsd:integer ;
     ] .
 
-# Component Details Shape - NO targetClass
 edpp:ComponentDetailsShape
     a sh:NodeShape ;
     sh:property [
@@ -175,7 +163,6 @@ edpp:ComponentDetailsShape
         sh:datatype xsd:double ;
     ] .
 
-# Component Shape - NO targetClass
 edpp:ComponentShape
     a sh:NodeShape ;
     sh:property [
@@ -193,7 +180,6 @@ edpp:ComponentShape
         sh:minInclusive 1 ;
     ] .
 
-# Maintenance Guidelines Shape - NO targetClass
 edpp:MaintenanceGuidelinesShape
     a sh:NodeShape ;
     sh:property [
@@ -228,7 +214,6 @@ edpp:MaintenanceGuidelinesShape
         sh:datatype xsd:string ;
     ] .
 
-# Environmental Impact Shape - NO targetClass
 edpp:EnvironmentalImpactShape
     a sh:NodeShape ;
     sh:property [
@@ -267,7 +252,6 @@ edpp:EnvironmentalImpactShape
         sh:maxCount 1 ;
     ] .
 
-# End of Life Shape - NO targetClass
 edpp:EndOfLifeShape
     a sh:NodeShape ;
     sh:property [
@@ -299,7 +283,6 @@ edpp:EndOfLifeShape
         sh:datatype xsd:string ;
     ] .
 
-# Regulations Shape - NO targetClass
 edpp:RegulationsShape
     a sh:NodeShape ;
     sh:property [
@@ -317,7 +300,6 @@ edpp:RegulationsShape
         sh:description "WEEE directive compliance" ;
     ] .
 
-# Supply Chain Shape - NO targetClass
 edpp:SupplyChainShape
     a sh:NodeShape ;
     sh:property [
@@ -326,7 +308,6 @@ edpp:SupplyChainShape
         sh:node edpp:BatterySupplyChainShape ;
     ] .
 
-# Battery Supply Chain Shape - NO targetClass
 edpp:BatterySupplyChainShape
     a sh:NodeShape ;
     sh:property [
@@ -339,7 +320,6 @@ edpp:BatterySupplyChainShape
         sh:maxCount 1 ;
     ] .
 
-# Consumer Variant Shape - NO targetClass
 edpp:ConsumerVariantShape
     a sh:NodeShape ;
     sh:property [
@@ -373,7 +353,6 @@ edpp:ConsumerVariantShape
         ]
     ] .
 
-# Consumer Features Shape - NO targetClass
 edpp:ConsumerFeaturesShape
     a sh:NodeShape ;
     sh:property [
@@ -404,7 +383,6 @@ edpp:ConsumerFeaturesShape
         sh:datatype xsd:string ;
     ] .
 
-# Industrial Variant Shape - NO targetClass
 edpp:IndustrialVariantShape
     a sh:NodeShape ;
     sh:property [
@@ -437,7 +415,6 @@ edpp:IndustrialVariantShape
         ]
     ] .
 
-# Industrial Features Shape - NO targetClass
 edpp:IndustrialFeaturesShape
     a sh:NodeShape ;
     sh:property [
@@ -469,7 +446,6 @@ edpp:IndustrialFeaturesShape
         sh:datatype xsd:double ;
     ] .
 
-# Professional Variant Shape - NO targetClass
 edpp:ProfessionalVariantShape
     a sh:NodeShape ;
     sh:property [
@@ -518,7 +494,6 @@ edpp:ProfessionalVariantShape
         ]
     ] .
 
-# Professional Features Shape - NO targetClass
 edpp:ProfessionalFeaturesShape
     a sh:NodeShape ;
     sh:property [

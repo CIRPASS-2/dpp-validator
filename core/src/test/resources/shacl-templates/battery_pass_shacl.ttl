@@ -5,15 +5,9 @@
 @prefix bp: <http://example.org/battery-passport#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-# STRATEGY 2: OPTIMIZED FOR VOCABULARY_URI EXTRACTION
-# Tutte le proprietà usano lo stesso namespace per facilitare l'estrazione
-# Alcune shape hanno targetClass, altre no (approccio misto)
-
-# Ontology declaration
 <http://example.org/battery-passport> a owl:Ontology ;
     owl:imports <http://example.org/battery-passport> .
 
-# Main Battery Passport Shape
 bp:BatteryPassportShape
     a sh:NodeShape ;
     sh:targetClass bp:BatteryPassport ;
@@ -65,7 +59,6 @@ bp:BatteryPassportShape
         sh:node bp:CompositionShape ;
     ] .
 
-# Product Identification Shape - NO targetClass (nidificata)
 bp:ProductIdentificationShape
     a sh:NodeShape ;
     sh:property [
@@ -82,7 +75,6 @@ bp:ProductIdentificationShape
         sh:node bp:ManufacturerShape ;
     ] .
 
-# Manufacturer Shape - NO targetClass (nidificata)
 bp:ManufacturerShape
     a sh:NodeShape ;
     sh:property [
@@ -115,7 +107,6 @@ bp:ManufacturerShape
         sh:datatype xsd:string ;
     ] .
 
-# General Information Shape - CON targetClass
 bp:GeneralInformationShape
     a sh:NodeShape ;
     sh:targetClass bp:GeneralInformation ;
@@ -147,7 +138,6 @@ bp:GeneralInformationShape
         sh:description "Battery chemistry type (e.g., NMC, LFP, NCA)" ;
     ] .
 
-# Performance Shape - CON targetClass
 bp:PerformanceShape
     a sh:NodeShape ;
     sh:targetClass bp:Performance ;
@@ -182,7 +172,6 @@ bp:PerformanceShape
         sh:datatype xsd:double ;
     ] .
 
-# Sustainability Shape - NO targetClass
 bp:SustainabilityShape
     a sh:NodeShape ;
     sh:property [
@@ -197,7 +186,6 @@ bp:SustainabilityShape
         sh:node bp:CriticalRawMaterialsShape ;
     ] .
 
-# Carbon Footprint Shape - NO targetClass
 bp:CarbonFootprintShape
     a sh:NodeShape ;
     sh:property [
@@ -215,7 +203,6 @@ bp:CarbonFootprintShape
         sh:in ("A" "B" "C" "D" "E") ;
     ] .
 
-# Critical Raw Materials Shape - NO targetClass
 bp:CriticalRawMaterialsShape
     a sh:NodeShape ;
     sh:property [
@@ -234,7 +221,6 @@ bp:CriticalRawMaterialsShape
         sh:datatype xsd:double ;
     ] .
 
-# Circularity Shape - CON targetClass
 bp:CircularityShape
     a sh:NodeShape ;
     sh:targetClass bp:Circularity ;
@@ -254,7 +240,6 @@ bp:CircularityShape
         sh:maxCount 1 ;
     ] .
 
-# Recyclable Content Shape - NO targetClass
 bp:RecyclableContentShape
     a sh:NodeShape ;
     sh:property [
@@ -286,7 +271,6 @@ bp:RecyclableContentShape
         sh:description "Percentage of recycled lead" ;
     ] .
 
-# Safety Shape - NO targetClass
 bp:SafetyShape
     a sh:NodeShape ;
     sh:property [
@@ -302,7 +286,6 @@ bp:SafetyShape
         sh:datatype xsd:double ;
     ] .
 
-# Data Source Shape - NO targetClass
 bp:DataSourceShape
     a sh:NodeShape ;
     sh:property [
@@ -317,7 +300,6 @@ bp:DataSourceShape
         sh:datatype xsd:string ;
     ] .
 
-# Composition Shape - NO targetClass
 bp:CompositionShape
     a sh:NodeShape ;
     sh:property [
@@ -326,7 +308,6 @@ bp:CompositionShape
         sh:node bp:CathodeActiveMaterialShape ;
     ] .
 
-# Cathode Active Material Shape - NO targetClass
 bp:CathodeActiveMaterialShape
     a sh:NodeShape ;
     sh:property [

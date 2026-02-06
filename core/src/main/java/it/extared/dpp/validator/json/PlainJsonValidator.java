@@ -20,6 +20,7 @@ import static it.extared.dpp.validator.utils.JsonUtils.JSON_TO_SCHEMA;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonNodePath;
 import com.networknt.schema.ValidationMessage;
 import io.quarkus.arc.Unremovable;
 import io.smallrye.mutiny.Uni;
@@ -89,10 +90,19 @@ public class PlainJsonValidator implements Validator {
         ValidationReport.Builder builder = ValidationReport.builder();
         builder.withValid(validationMessages == null || validationMessages.isEmpty());
         if (validationMessages != null && !validationMessages.isEmpty()) {
-            builder.withInvalidProperties(
-                    validationMessages.stream()
-                            .map(m -> new InvalidProperty(m.getProperty(), m.getMessage()))
-                            .toList());
+            builder =
+                    builder.withInvalidProperties(
+                            validationMessages.stream()
+                                    .map(
+                                            m -> {
+                                                JsonNodePath path = m.getInstanceLocation();
+                                                return new InvalidProperty(
+                                                        path != null
+                                                                ? path + "." + m.getProperty()
+                                                                : m.getProperty(),
+                                                        m.getMessage());
+                                            })
+                                    .toList());
         }
         builder.withMessage(
                         "Validation performed using template found by %s"

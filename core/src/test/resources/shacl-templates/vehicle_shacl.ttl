@@ -5,14 +5,10 @@
 @prefix vdpp: <http://example.org/vehicle-dpp#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-# STRATEGY 1: ALL TARGET CLASSES DEFINED
-# Ogni NodeShape ha il proprio targetClass per permettere matching diretto
 
-# Ontology declaration
 <http://example.org/vehicle-dpp> a owl:Ontology ;
     owl:imports <http://example.org/vehicle-dpp> .
 
-# Main Vehicle DPP Shape
 vdpp:VehicleDPPShape
     a sh:NodeShape ;
     sh:targetClass vdpp:VehicleDPP ;
@@ -59,7 +55,6 @@ vdpp:VehicleDPPShape
         sh:node vdpp:StandardsComplianceShape ;
     ] .
 
-# Vehicle Identification Shape
 vdpp:VehicleIdentificationShape
     a sh:NodeShape ;
     sh:targetClass vdpp:VehicleIdentification ;
@@ -84,7 +79,6 @@ vdpp:VehicleIdentificationShape
         sh:node vdpp:AssemblerShape ;
     ] .
 
-# Assembler Shape
 vdpp:AssemblerShape
     a sh:NodeShape ;
     sh:targetClass vdpp:Assembler ;
@@ -108,7 +102,6 @@ vdpp:AssemblerShape
         sh:datatype xsd:string ;
     ] .
 
-# Vehicle Characteristics Shape
 vdpp:VehicleCharacteristicsShape
     a sh:NodeShape ;
     sh:targetClass vdpp:VehicleCharacteristics ;
@@ -139,7 +132,6 @@ vdpp:VehicleCharacteristicsShape
         sh:datatype xsd:date ;
     ] .
 
-# Parts Inventory Shape
 vdpp:PartsInventoryShape
     a sh:NodeShape ;
     sh:targetClass vdpp:PartsInventory ;
@@ -155,7 +147,6 @@ vdpp:PartsInventoryShape
         sh:in ("steel" "aluminum" "carbonFiber" "mixed") ;
     ] .
 
-# Part Shape
 vdpp:PartShape
     a sh:NodeShape ;
     sh:targetClass vdpp:Part ;
@@ -173,7 +164,6 @@ vdpp:PartShape
         sh:minInclusive 1 ;
     ] .
 
-# Operating Instructions Shape
 vdpp:OperatingInstructionsShape
     a sh:NodeShape ;
     sh:targetClass vdpp:OperatingInstructions ;
@@ -199,7 +189,6 @@ vdpp:OperatingInstructionsShape
         sh:description "Pre-operation safety inspection procedures" ;
     ] .
 
-# Ecological Footprint Shape
 vdpp:EcologicalFootprintShape
     a sh:NodeShape ;
     sh:targetClass vdpp:EcologicalFootprint ;
@@ -218,7 +207,6 @@ vdpp:EcologicalFootprintShape
         sh:description "CO2 emissions in g/km" ;
     ] .
 
-# Lifecycle Management Shape
 vdpp:LifecycleManagementShape
     a sh:NodeShape ;
     sh:targetClass vdpp:LifecycleManagement ;
@@ -246,7 +234,6 @@ vdpp:LifecycleManagementShape
         sh:description "Expected operational lifespan in years" ;
     ] .
 
-# Standards Compliance Shape
 vdpp:StandardsComplianceShape
     a sh:NodeShape ;
     sh:targetClass vdpp:StandardsCompliance ;
@@ -265,7 +252,6 @@ vdpp:StandardsComplianceShape
         sh:description "Safety rating (e.g., 5-star NCAP)" ;
     ] .
 
-# Sensor Reading Shape (for pattern properties sensor_*)
 vdpp:SensorReadingShape
     a sh:NodeShape ;
     sh:targetClass vdpp:SensorReading ;
@@ -302,7 +288,6 @@ vdpp:SensorReadingShape
         sh:datatype xsd:date ;
     ] .
 
-# Metric Shape (for pattern properties metric_*)
 vdpp:MetricShape
     a sh:NodeShape ;
     sh:targetClass vdpp:Metric ;
@@ -332,7 +317,6 @@ vdpp:MetricShape
         sh:datatype xsd:dateTime ;
     ] .
 
-# Certification Shape (for pattern properties certification_*)
 vdpp:CertificationShape
     a sh:NodeShape ;
     sh:targetClass vdpp:Certification ;
@@ -368,7 +352,6 @@ vdpp:CertificationShape
         sh:datatype xsd:string ;
     ] .
 
-# Test Shape (for pattern properties test_*)
 vdpp:TestShape
     a sh:NodeShape ;
     sh:targetClass vdpp:Test ;

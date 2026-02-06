@@ -27,7 +27,7 @@ import jakarta.validation.constraints.Pattern;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "resourceType",
+        property = "metadataType",
         visible = true)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = ResourceMetadata.class, name = BASE),
@@ -41,7 +41,7 @@ public class ResourceMetadata {
 
     private Long id;
 
-    private String resourceType;
+    private String metadataType;
 
     @NotNull private String name;
 
@@ -54,16 +54,16 @@ public class ResourceMetadata {
     private String version;
 
     protected ResourceMetadata(
-            String name, String description, String version, String resourceType) {
-        this(resourceType);
+            String name, String description, String version, String metadataType) {
+        this(metadataType);
         this.name = name;
         this.description = description;
         this.version = version;
     }
 
     protected ResourceMetadata(
-            Long id, String name, String description, String version, String resourceType) {
-        this(resourceType);
+            Long id, String name, String description, String version, String metadataType) {
+        this(metadataType);
         this.id = id;
         this.name = name;
         this.description = description;
@@ -86,11 +86,11 @@ public class ResourceMetadata {
     }
 
     public ResourceMetadata() {
-        this.resourceType = BASE;
+        this.metadataType = BASE;
     }
 
-    protected ResourceMetadata(String resourceType) {
-        this.resourceType = resourceType;
+    protected ResourceMetadata(String metadataType) {
+        this.metadataType = metadataType;
     }
 
     public Long getId() {
@@ -101,12 +101,12 @@ public class ResourceMetadata {
         this.id = id;
     }
 
-    public String getResourceType() {
-        return resourceType;
+    public String getMetadataType() {
+        return metadataType;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+    public void setMetadataType(String metadataType) {
+        this.metadataType = metadataType;
     }
 
     public String getName() {

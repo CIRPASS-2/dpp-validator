@@ -4,7 +4,7 @@ CREATE TABLE json_schemas
     schema_name          VARCHAR(255) NOT NULL,
     description          VARCHAR(500),
     schema_version       VARCHAR(50)  NOT NULL,
-    required_paths       TEXT[] NOT NULL, -- paths comuni/base
+    required_paths       TEXT[] NOT NULL,
     required_paths_count INT          NOT NULL,
     has_variants         BOOLEAN   DEFAULT FALSE,
     schema_content       JSONB        NOT NULL,
