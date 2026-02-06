@@ -298,7 +298,7 @@ SELECT js.schema_content FROM json_schemas js WHERE js.id=$1
                         .preparedQuery(INSERT_SCHEMA_WITH_METADATA)
                         .execute(
                                 Tuple.tuple(
-                                        List.of(
+                                        Arrays.asList(
                                                 resMetadata.getName(),
                                                 resMetadata.getDescription(),
                                                 resMetadata.getVersion(),
@@ -351,7 +351,7 @@ SELECT js.schema_content FROM json_schemas js WHERE js.id=$1
                         .map(
                                 v ->
                                         Tuple.tuple(
-                                                List.of(
+                                                Arrays.asList(
                                                         schemaId,
                                                         v.getVariantType(),
                                                         v.getVariantIndex(),

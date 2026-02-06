@@ -89,6 +89,8 @@ public enum PayloadType {
 
     private static String actualContentType(byte[] dpp, String contentType) {
         try {
+            if (dpp == null || dpp.length == 0)
+                throw new InvalidOpException("Request payload is null or empty");
             if (!contentType.contains(APPLICATION_JSON) && !contentType.contains(TEXT_JSON))
                 return contentType;
             ObjectMapper objectMapper = CDI.current().select(ObjectMapper.class).get();
