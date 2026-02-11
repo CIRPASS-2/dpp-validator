@@ -1,0 +1,96 @@
+name: 🔧 Improvement
+description: Propose an improvement to existing functionality
+title: "[Improvement]: "
+labels: ["enhancement", "improvement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us improve the dpp validator!
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Improvement Area
+      description: Which aspect do you want to improve?
+      options:
+        - Performance
+        - Code / Refactoring
+        - Documentation
+        - Testing
+        - Developer Experience
+        - User Experience
+        - Security
+        - Configuration / Deployment
+        - Logging / Monitoring
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Situation
+      description: How does it work now and what can be improved?
+      placeholder: |
+        Currently component X...
+        This causes issues with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed Improvement
+      description: What would you like to change/improve?
+      placeholder: |
+        I propose to modify...
+        This would improve...
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: What are the advantages of this improvement?
+      placeholder: |
+        - Performance: 30% reduction in response time
+        - Maintainability: more readable code
+        - Developer Experience: simpler setup
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      description: How invasive is this change?
+      options:
+        - No breaking changes (internal improvements only)
+        - Minor breaking change (easy to migrate)
+        - Significant breaking change (requires refactoring)
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical
+    attributes:
+      label: Technical Details
+      description: Technical approach, libraries to use, necessary changes
+      placeholder: |
+        - Replace library X with Y
+        - Implement caching with Redis
+        - Refactor module Z
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Links, references, code examples
+      placeholder: |
+        References:
+        - https://...
+        - Similar to what was done in project X
