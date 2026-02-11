@@ -4,7 +4,7 @@ A service for validating Digital Product Passport (DPP) payloads in JSON or JSON
 
 © CIRPASS-2 Consortium, 2024-2027
 
-<img width="832" height="128" alt="image" src="https://github.com/user-attachments/assets/7ad1fa77-65f3-4379-909d-614f64587d40" />
+<img width="832" height="128" alt="image" src="https://raw.githubusercontent.com/CIRPASS-2/assets/main/images/cc-commons.png" />
 
 The CIRPASS-2 project receives funding under the European Union's DIGITAL EUROPE PROGRAMME under the GA No 101158775.
 

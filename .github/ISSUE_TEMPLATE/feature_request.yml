@@ -1,0 +1,64 @@
+name: ✨ Feature Request
+description: Propose a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement", "feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing new ideas to the dpp validator!
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to Solve
+      description: What problem would this feature solve?
+      placeholder: "It's currently difficult/impossible to do X because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: |
+        The feature should allow...
+        The user could...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - High (blocking for my use case)
+        - Medium (would significantly improve workflow)
+        - Low (nice to have)
+    validations:
+      required: true
+
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use Case
+      description: Describe the concrete use case
+      placeholder: |
+        As a user, I would like to...
+        So that...
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical
+    attributes:
+      label: Technical Notes (optional)
+      description: Technical considerations, API suggestions, architecture
+      placeholder: |
+        Could be implemented via...
+        Would require changes to...
+      render: markdown
+    validations:
+      required: false
