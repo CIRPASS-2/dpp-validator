@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.jena.graph.Graph;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.shacl.ShaclValidator;
 import org.apache.jena.shacl.Shapes;
@@ -102,13 +101,15 @@ public class SemanticValidator implements Validator {
     private ValidationReport.Builder validate(byte[] inputData, MatchResult<String> match) {
         Model dataModel = ModelFactory.createDefaultModel();
         dataModel.read(new ByteArrayInputStream(inputData), null, "JSON-LD");
-        Graph dataGraph = dataModel.getGraph();
         Model shapesModel = ModelFactory.createDefaultModel();
         shapesModel.read(new ByteArrayInputStream(match.getResource().getBytes()), null, "TURTLE");
-        Graph shapesGraph = shapesModel.getGraph();
-        Shapes shapes = Shapes.parse(shapesGraph);
+        InfModel inferredModel =
+                ModelFactory.createRDFSModel(ModelFactory.createUnion(dataModel, shapesModel));
+
+        Shapes shapes = Shapes.parse(shapesModel.getGraph());
+
         org.apache.jena.shacl.ValidationReport report =
-                ShaclValidator.get().validate(shapes, dataGraph);
+                ShaclValidator.get().validate(shapes, inferredModel.getGraph());
 
         return asDto(match, report);
     }
