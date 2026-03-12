@@ -41,7 +41,23 @@ public interface DPPValidationAPI {
             description =
                     "Validates a DPP automatically finding the best matching validation resource in the service repository to validate it.")
     @POST
-    @Consumes(value = {APPLICATION_JSON, TEXT_JSON, APPLICATION_LD_JSON})
+    @Consumes(
+            value = {
+                APPLICATION_JSON,
+                TEXT_JSON,
+                APPLICATION_LD_JSON,
+                "application/rdf+json",
+                "application/rdf+xml",
+                "application/xml",
+                "text/xml",
+                "application/x+turtle",
+                "text/turtle",
+                "application/n-triples",
+                "text/plain",
+                "application/n-quads",
+                "text/n3",
+                "text/rdf+n3"
+            })
     Uni<ValidationReport> validate(byte[] dpp, @RestHeader("Content-Type") String contentType)
             throws IOException;
 
