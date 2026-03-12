@@ -29,8 +29,9 @@ public class DPPValidationAPIImpl implements DPPValidationAPI {
 
     @Override
     public Uni<ValidationReport> validate(byte[] dpp, String contentType) throws IOException {
+        PayloadType payloadType = PayloadType.fromContentType(dpp, contentType);
         return validatorService.validate(
-                dpp, PayloadType.fromContentType(dpp, contentType).asValidationType());
+                payloadType.convertToJsonLdIfNeeded(dpp), payloadType.asValidationType());
     }
 
     @Override

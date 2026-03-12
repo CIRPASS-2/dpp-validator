@@ -15,6 +15,7 @@
  */
 package it.extrared.dpp.validation.api.rest;
 
+import static it.extared.dpp.validator.utils.CommonUtils.debug;
 import static it.extared.dpp.validator.utils.JsonLdUtils.APPLICATION_LD_JSON;
 import static it.extared.dpp.validator.utils.JsonUtils.APPLICATION_JSON;
 import static it.extared.dpp.validator.utils.JsonUtils.TEXT_JSON;
@@ -34,6 +35,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.jboss.logging.Logger;
 
 public enum PayloadType {
     json(null, List.of(APPLICATION_JSON, TEXT_JSON)),
@@ -48,6 +50,7 @@ public enum PayloadType {
     private final Lang lang;
     private final List<String> supportedMimeTypes;
 
+    private static final Logger LOGGER=Logger.getLogger(PayloadType.class);
     PayloadType(Lang lang, List<String> supportedMimeTypes) {
         this.lang = lang;
         this.supportedMimeTypes = supportedMimeTypes;
@@ -63,6 +66,17 @@ public enum PayloadType {
             RDFDataMgr.write(new BufferedOutputStream(baos), model, Lang.TURTLE);
             return new ByteArrayInputStream(baos.toByteArray());
         }
+    }
+
+    public byte[] convertToJsonLdIfNeeded(byte[] input){
+        if (input==null) throw new InvalidOpException("Empty DPP input");
+        if (Objects.equals(json,this) || Objects.equals(json_ld,this)) return  input;
+        debug(LOGGER,()->"converting %s to json-ld".formatted(new String(input)));
+        Model model = ModelFactory.createDefaultModel();
+        RDFDataMgr.read(model, new ByteArrayInputStream(input), this.lang);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        RDFDataMgr.write(new BufferedOutputStream(baos), model, Lang.JSONLD);
+        return baos.toByteArray();
     }
 
     public ValidationType asValidationType() {
