@@ -19,12 +19,16 @@ import static it.extared.dpp.validator.utils.CommonUtils.debug;
 import static it.extared.dpp.validator.utils.JsonUtils.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.quarkus.runtime.util.StringUtil;
 import it.extared.dpp.validator.json.dto.DiscriminatorInfo;
 import it.extared.dpp.validator.json.dto.PatternProperty;
 import it.extared.dpp.validator.json.dto.SchemaMetadata;
 import it.extared.dpp.validator.json.dto.SchemaVariant;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.*;
 import org.jboss.logging.Logger;
 
@@ -33,34 +37,108 @@ public class JsonSchemaMetadataExtractor {
 
     private static final Logger LOGGER = Logger.getLogger(JsonSchemaMetadataExtractor.class);
 
+    private static final String REF_KEY = "$ref";
+
+    @Inject ObjectMapper objectMapper;
+
     public SchemaMetadata extractMetadata(JsonNode schema) {
         SchemaMetadata metadata = new SchemaMetadata();
         debug(LOGGER, () -> "extracting metadata from schema \n %s".formatted(schema));
-        handleSchema(schema, metadata);
+        // Use an identity-based set to track visited nodes and break circular ref chains
+        Set<JsonNode> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+        handleSchema(schema, schema, metadata, visited);
         return metadata;
     }
 
-    private void handleSchema(JsonNode schema, SchemaMetadata metadata) {
-        Set<String> paths = extractRequiredPaths(schema, "");
+    private void handleSchema(
+            JsonNode schema, JsonNode root, SchemaMetadata metadata, Set<JsonNode> visited) {
+        JsonNode resolved = resolveRef(schema, root, visited);
+        if (resolved == null) return;
+
+        JsonNode flat = flattenAllOf(resolved, root, visited);
+
+        Set<String> paths = extractRequiredPaths(flat, root, "", visited);
         metadata.getRequiredPaths().addAll(paths);
-        List<PatternProperty> patternProps = extractPatternProperties(schema, "");
+        List<PatternProperty> patternProps = extractPatternProperties(flat, root, "", visited);
         metadata.getPatternProperties().addAll(patternProps);
-        if (schema.has(ALL_OF_KEY)) {
-            handleAllOf(schema.get(ALL_OF_KEY), metadata);
+
+        // Use resolved (not flat) because flattenAllOf removes the allOf key
+        if (resolved.has(ALL_OF_KEY)) {
+            handleAllOf(resolved.get(ALL_OF_KEY), root, metadata, visited);
         }
-        if (schema.has(ONE_OF_KEY)) {
+        if (flat.has(ONE_OF_KEY)) {
             metadata.getVariants()
-                    .addAll(extractVariants(schema.get(ONE_OF_KEY), ONE_OF_KEY, schema));
+                    .addAll(extractVariants(flat.get(ONE_OF_KEY), ONE_OF_KEY, flat, root, visited));
             metadata.setHasVariants(true);
         }
-        if (schema.has(ANY_OF_KEY)) {
+        if (flat.has(ANY_OF_KEY)) {
             metadata.getVariants()
-                    .addAll(extractVariants(schema.get(ANY_OF_KEY), ANY_OF_KEY, schema));
+                    .addAll(extractVariants(flat.get(ANY_OF_KEY), ANY_OF_KEY, flat, root, visited));
             metadata.setHasVariants(true);
         }
     }
 
-    private Set<String> extractRequiredPaths(JsonNode schema, String currentPath) {
+    private JsonNode resolveRef(JsonNode schema, JsonNode root, Set<JsonNode> visited) {
+        if (schema == null) return null;
+        if (!schema.has(REF_KEY)) return schema;
+
+        String ref = schema.get(REF_KEY).asText();
+        if (!ref.startsWith("#/")) return schema;
+
+        String[] parts = ref.substring(2).split("/");
+        JsonNode resolved = root;
+        for (String part : parts) {
+            resolved = resolved.get(part);
+            if (resolved == null) return null;
+        }
+
+        // Guard: if we've already visited this exact node instance, stop
+        if (!visited.add(resolved)) return null;
+
+        return resolveRef(resolved, root, visited);
+    }
+
+    private JsonNode flattenAllOf(JsonNode schema, JsonNode root, Set<JsonNode> visited) {
+        if (!schema.has(ALL_OF_KEY)) return schema;
+
+        ObjectNode merged = objectMapper.createObjectNode();
+        ObjectNode mergedProperties = objectMapper.createObjectNode();
+        ArrayNode mergedRequired = objectMapper.createArrayNode();
+
+        schema.properties().stream()
+                .filter(e -> !e.getKey().equals(ALL_OF_KEY))
+                .forEach(e -> merged.set(e.getKey(), e.getValue()));
+
+        for (JsonNode entry : schema.get(ALL_OF_KEY)) {
+            JsonNode resolved = resolveRef(entry, root, visited);
+            if (resolved == null) continue;
+            JsonNode flattened = flattenAllOf(resolved, root, visited);
+
+            if (flattened.has(PROPERTIES_KEY)) {
+                flattened
+                        .get(PROPERTIES_KEY)
+                        .properties()
+                        .forEach(e -> mergedProperties.set(e.getKey(), e.getValue()));
+            }
+            if (flattened.has(REQUIRED_KEY)) {
+                flattened.get(REQUIRED_KEY).forEach(mergedRequired::add);
+            }
+            flattened.properties().stream()
+                    .filter(
+                            e ->
+                                    !e.getKey().equals(PROPERTIES_KEY)
+                                            && !e.getKey().equals(REQUIRED_KEY)
+                                            && !e.getKey().equals(ALL_OF_KEY))
+                    .forEach(e -> merged.set(e.getKey(), e.getValue()));
+        }
+
+        if (!mergedProperties.isEmpty()) merged.set(PROPERTIES_KEY, mergedProperties);
+        if (!mergedRequired.isEmpty()) merged.set(REQUIRED_KEY, mergedRequired);
+        return merged;
+    }
+
+    private Set<String> extractRequiredPaths(
+            JsonNode schema, JsonNode root, String currentPath, Set<JsonNode> visited) {
         debug(
                 LOGGER,
                 () ->
@@ -72,79 +150,142 @@ public class JsonSchemaMetadataExtractor {
         Set<String> paths = new HashSet<>();
         if (schema == null || !schema.isObject()) return paths;
 
-        JsonNode requiredNode = schema.get(REQUIRED_KEY);
-        JsonNode propertiesNode = schema.get(PROPERTIES_KEY);
+        JsonNode resolved = flattenAllOf(resolveRefSafe(schema, root, visited), root, visited);
+        if (resolved == null) return paths;
 
+        JsonNode requiredNode = resolved.get(REQUIRED_KEY);
+        JsonNode propertiesNode = resolved.get(PROPERTIES_KEY);
+
+        Set<String> requiredFields = new HashSet<>();
         if (requiredNode != null && requiredNode.isArray()) {
             debug(LOGGER, () -> "extracting required properties %s".formatted(requiredNode));
             requiredNode.forEach(
-                    req -> addPathsFromRequiredNode(req, paths, propertiesNode, currentPath));
+                    req -> {
+                        requiredFields.add(req.asText());
+                        addPathsFromRequiredNode(
+                                req, paths, propertiesNode, root, currentPath, visited);
+                    });
         }
 
-        return paths;
-    }
-
-    private void addPathsFromRequiredNode(
-            JsonNode reqNode, Set<String> paths, JsonNode propertiesNode, String currentPath) {
-        String propName = reqNode.asText();
-        String fullPath = currentPath.isEmpty() ? propName : currentPath + "." + propName;
-        debug(LOGGER, () -> "adding full froom required node, %s".formatted(fullPath));
-        paths.add(fullPath);
-        if (propertiesNode != null && propertiesNode.has(propName)) {
-            JsonNode propSchema = propertiesNode.get(propName);
-            paths.addAll(recurseIntoProperty(propSchema, fullPath));
-        }
-    }
-
-    private Set<String> recurseIntoProperty(JsonNode propSchema, String fullPath) {
-        Set<String> paths = new HashSet<>();
-        JsonNode propType = propSchema.get(TYPE_KEY);
-
-        if (propType != null) {
-            if (propType.asText().equals(OBJECT_KEY)) {
-                paths.addAll(extractRequiredPaths(propSchema, fullPath));
-
-                if (propSchema.has(PATTER_PROPERTIES_KEY)) {
-                    paths.add(fullPath + ".<pattern>");
-                }
-            } else if (propType.asText().equals(ARRAY_KEY)) {
-                JsonNode itemsNode = propSchema.get(ITEMS_KEY);
-                if (itemsNode != null && itemsNode.isObject()) {
-                    JsonNode itemType = itemsNode.get(TYPE_KEY);
-                    if (itemType != null && itemType.asText().equals(OBJECT_KEY)) {
-                        paths.addAll(extractRequiredPaths(itemsNode, fullPath + "[]"));
-                    }
-                }
+        // Traverse non-required properties too to find nested required paths.
+        // Needed for schemas like AAS where the root has no required fields
+        // but nested definitions do.
+        if (propertiesNode != null) {
+            for (Map.Entry<String, JsonNode> entry : propertiesNode.properties()) {
+                String propName = entry.getKey();
+                if (requiredFields.contains(propName)) continue;
+                String fullPath = currentPath.isEmpty() ? propName : currentPath + "." + propName;
+                paths.addAll(recurseIntoProperty(entry.getValue(), root, fullPath, visited));
             }
         }
 
         return paths;
     }
 
-    private void handleAllOf(JsonNode allOfNode, SchemaMetadata metadata) {
+    private void addPathsFromRequiredNode(
+            JsonNode reqNode,
+            Set<String> paths,
+            JsonNode propertiesNode,
+            JsonNode root,
+            String currentPath,
+            Set<JsonNode> visited) {
+        String propName = reqNode.asText();
+        String fullPath = currentPath.isEmpty() ? propName : currentPath + "." + propName;
+        debug(LOGGER, () -> "adding full from required node, %s".formatted(fullPath));
+        paths.add(fullPath);
+        if (propertiesNode != null && propertiesNode.has(propName)) {
+            paths.addAll(
+                    recurseIntoProperty(propertiesNode.get(propName), root, fullPath, visited));
+        }
+    }
+
+    private Set<String> recurseIntoProperty(
+            JsonNode propSchema, JsonNode root, String fullPath, Set<JsonNode> visited) {
+        Set<String> paths = new HashSet<>();
+        if (propSchema == null) return paths;
+
+        JsonNode resolved = resolveRefSafe(propSchema, root, visited);
+        if (resolved == null) return paths;
+
+        JsonNode flat = flattenAllOf(resolved, root, visited);
+        JsonNode propType = flat.get(TYPE_KEY);
+
+        if (propType != null) {
+            if (propType.asText().equals(OBJECT_KEY)) {
+                paths.addAll(extractRequiredPaths(flat, root, fullPath, visited));
+                if (flat.has(PATTER_PROPERTIES_KEY)) {
+                    paths.add(fullPath + ".<pattern>");
+                }
+            } else if (propType.asText().equals(ARRAY_KEY)) {
+                JsonNode itemsNode = flat.get(ITEMS_KEY);
+                if (itemsNode != null && itemsNode.isObject()) {
+                    JsonNode itemResolved = resolveRefSafe(itemsNode, root, visited);
+                    if (itemResolved != null) {
+                        JsonNode itemFlat = flattenAllOf(itemResolved, root, visited);
+                        JsonNode itemType = itemFlat.get(TYPE_KEY);
+                        if (itemType != null && itemType.asText().equals(OBJECT_KEY)) {
+                            paths.addAll(
+                                    extractRequiredPaths(itemFlat, root, fullPath + "[]", visited));
+                        }
+                    }
+                }
+            }
+        } else if (flat.has(PROPERTIES_KEY) || flat.has(REQUIRED_KEY)) {
+            paths.addAll(extractRequiredPaths(flat, root, fullPath, visited));
+        }
+
+        return paths;
+    }
+
+    /**
+     * Resolves a $ref without adding the target node to visited — used when we only want to read
+     * the node content without committing to a traversal path. Returns null if the ref has already
+     * been visited (cycle detected).
+     */
+    private JsonNode resolveRefSafe(JsonNode schema, JsonNode root, Set<JsonNode> visited) {
+        if (schema == null) return null;
+        if (!schema.has(REF_KEY)) return schema;
+        return resolveRef(schema, root, visited);
+    }
+
+    private void handleAllOf(
+            JsonNode allOfNode, JsonNode root, SchemaMetadata metadata, Set<JsonNode> visited) {
         if (!allOfNode.isArray()) return;
         debug(LOGGER, () -> "adding all of schemas %s".formatted(allOfNode));
-        allOfNode.forEach(n -> handleSchema(n, metadata));
+        allOfNode.forEach(n -> handleSchema(n, root, metadata, visited));
     }
 
     private List<SchemaVariant> extractVariants(
-            JsonNode variantsNode, String variantType, JsonNode parentSchema) {
+            JsonNode variantsNode,
+            String variantType,
+            JsonNode parentSchema,
+            JsonNode root,
+            Set<JsonNode> visited) {
         List<SchemaVariant> variants = new ArrayList<>();
         if (!variantsNode.isArray()) return variants;
 
-        DiscriminatorInfo discriminator = detectDiscriminator(variantsNode, parentSchema);
+        DiscriminatorInfo discriminator =
+                detectDiscriminator(variantsNode, parentSchema, root, visited);
 
         int index = 0;
         for (JsonNode variantSchema : variantsNode) {
+            JsonNode resolved = resolveRefSafe(variantSchema, root, visited);
+            if (resolved == null) {
+                index++;
+                continue;
+            }
+            JsonNode resolvedVariant = flattenAllOf(resolved, root, visited);
             SchemaVariant variant = new SchemaVariant();
             variant.setVariantType(variantType);
             variant.setVariantIndex(index);
-            variant.setRequiredPaths(extractRequiredPaths(variantSchema, ""));
+            Set<JsonNode> variantVisited = Collections.newSetFromMap(new IdentityHashMap<>());
+            variant.setRequiredPaths(
+                    extractRequiredPaths(resolvedVariant, root, "", variantVisited));
 
             if (discriminator != null) {
                 variant.setDiscriminatorPath(discriminator.getPath());
                 variant.setDiscriminatorValue(
-                        extractDiscriminatorValue(variantSchema, discriminator));
+                        extractDiscriminatorValue(resolvedVariant, discriminator));
             }
 
             variants.add(variant);
@@ -154,7 +295,8 @@ public class JsonSchemaMetadataExtractor {
         return variants;
     }
 
-    private DiscriminatorInfo detectDiscriminator(JsonNode variantsNode, JsonNode parentSchema) {
+    private DiscriminatorInfo detectDiscriminator(
+            JsonNode variantsNode, JsonNode parentSchema, JsonNode root, Set<JsonNode> visited) {
         debug(LOGGER, () -> "retrieving discriminator for polymorphic json");
         if (parentSchema.has(DISCRIMINATOR_KEY)) {
             JsonNode disc = parentSchema.get(DISCRIMINATOR_KEY);
@@ -165,14 +307,14 @@ public class JsonSchemaMetadataExtractor {
             }
         }
 
-        // ok we don't have a discriminator explicitly defined.
-        // let's search in all the variants for a common property that has a different value in each
-        // variant
         Map<String, Set<String>> candidateFields = new HashMap<>();
 
         for (JsonNode variant : variantsNode) {
-            if (variant.has(PROPERTIES_KEY))
-                variant.get(PROPERTIES_KEY)
+            JsonNode resolved = resolveRefSafe(variant, root, visited);
+            if (resolved == null) continue;
+            JsonNode flat = flattenAllOf(resolved, root, visited);
+            if (flat.has(PROPERTIES_KEY))
+                flat.get(PROPERTIES_KEY)
                         .properties()
                         .forEach(entry -> addCandidateField(candidateFields, entry));
         }
@@ -190,7 +332,6 @@ public class JsonSchemaMetadataExtractor {
         return null;
     }
 
-    // add the candidate if we have enum or const keys that might it likely being a discriminator
     private void addCandidateField(
             Map<String, Set<String>> candidateFields, Map.Entry<String, JsonNode> variantProperty) {
         String fieldName = variantProperty.getKey();
@@ -223,7 +364,8 @@ public class JsonSchemaMetadataExtractor {
         return null;
     }
 
-    private List<PatternProperty> extractPatternProperties(JsonNode schema, String currentPath) {
+    private List<PatternProperty> extractPatternProperties(
+            JsonNode schema, JsonNode root, String currentPath, Set<JsonNode> visited) {
         List<PatternProperty> patterns = new ArrayList<>();
 
         if (!schema.has(PATTER_PROPERTIES_KEY)) return patterns;
@@ -231,16 +373,15 @@ public class JsonSchemaMetadataExtractor {
         JsonNode patternPropsNode = schema.get(PATTER_PROPERTIES_KEY);
         patternPropsNode
                 .properties()
-                .forEach(entry -> addPatternProperty(patterns, currentPath, entry));
+                .forEach(entry -> addPatternProperty(patterns, currentPath, entry, root, visited));
 
         if (schema.has(PROPERTIES_KEY)) {
             for (Map.Entry<String, JsonNode> entry : schema.get(PROPERTIES_KEY).properties()) {
-
                 String propName = entry.getKey();
-                JsonNode propSchema = entry.getValue();
+                JsonNode propSchema = resolveRefSafe(entry.getValue(), root, visited);
+                if (propSchema == null) continue;
                 String fullPath = currentPath.isEmpty() ? propName : currentPath + "." + propName;
-
-                patterns.addAll(extractPatternProperties(propSchema, fullPath));
+                patterns.addAll(extractPatternProperties(propSchema, root, fullPath, visited));
             }
         }
 
@@ -250,9 +391,12 @@ public class JsonSchemaMetadataExtractor {
     private void addPatternProperty(
             List<PatternProperty> patterns,
             String currentPath,
-            Map.Entry<String, JsonNode> patternProp) {
+            Map.Entry<String, JsonNode> patternProp,
+            JsonNode root,
+            Set<JsonNode> visited) {
         String pattern = patternProp.getKey();
-        JsonNode patternSchema = patternProp.getValue();
+        JsonNode patternSchema = resolveRefSafe(patternProp.getValue(), root, visited);
+        if (patternSchema == null) return;
         debug(LOGGER, () -> "adding pattern property %s".formatted(pattern));
         PatternProperty pp = new PatternProperty();
         pp.setPatternRegex(pattern);
@@ -264,7 +408,9 @@ public class JsonSchemaMetadataExtractor {
         JsonNode patternType = patternSchema.get(TYPE_KEY);
         if (patternType != null && patternType.asText().equals(OBJECT_KEY)) {
             debug(LOGGER, () -> "pattern property is an object. extracting subpaths");
-            pp.setRequiredSubPaths(new ArrayList<>(extractRequiredPaths(patternSchema, "")));
+            Set<JsonNode> patternVisited = Collections.newSetFromMap(new IdentityHashMap<>());
+            pp.setRequiredSubPaths(
+                    new ArrayList<>(extractRequiredPaths(patternSchema, root, "", patternVisited)));
         }
 
         patterns.add(pp);

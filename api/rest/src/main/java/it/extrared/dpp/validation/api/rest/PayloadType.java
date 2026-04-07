@@ -50,7 +50,8 @@ public enum PayloadType {
     private final Lang lang;
     private final List<String> supportedMimeTypes;
 
-    private static final Logger LOGGER=Logger.getLogger(PayloadType.class);
+    private static final Logger LOGGER = Logger.getLogger(PayloadType.class);
+
     PayloadType(Lang lang, List<String> supportedMimeTypes) {
         this.lang = lang;
         this.supportedMimeTypes = supportedMimeTypes;
@@ -68,10 +69,10 @@ public enum PayloadType {
         }
     }
 
-    public byte[] convertToJsonLdIfNeeded(byte[] input){
-        if (input==null) throw new InvalidOpException("Empty DPP input");
-        if (Objects.equals(json,this) || Objects.equals(json_ld,this)) return  input;
-        debug(LOGGER,()->"converting %s to json-ld".formatted(new String(input)));
+    public byte[] convertToJsonLdIfNeeded(byte[] input) {
+        if (input == null) throw new InvalidOpException("Empty DPP input");
+        if (Objects.equals(json, this) || Objects.equals(json_ld, this)) return input;
+        debug(LOGGER, () -> "converting %s to json-ld".formatted(new String(input)));
         Model model = ModelFactory.createDefaultModel();
         RDFDataMgr.read(model, new ByteArrayInputStream(input), this.lang);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
