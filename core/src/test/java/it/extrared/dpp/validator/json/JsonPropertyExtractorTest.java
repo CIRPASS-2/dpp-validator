@@ -38,4 +38,10 @@ public class JsonPropertyExtractorTest {
         props = extractor.extractAllPaths(CommonUtils.readJsonNode("invalid-battery.json"));
         assertEquals(42, props.size());
     }
+
+    @Test
+    public void testJsonPropertyExtraction2() throws JsonProcessingException {
+        Set<String> props = extractor.extractAllPaths(CommonUtils.readJsonNode("aas-bike.json"));
+        assertEquals(64, props.size());
+    }
 }
