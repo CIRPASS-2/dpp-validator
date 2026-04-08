@@ -166,11 +166,14 @@ SELECT js.schema_content FROM json_schemas js WHERE js.id=$1
                     ) AS preliminary_score
                 FROM base_jaccard bj
                 LEFT JOIN variant_jaccard vj ON bj.id = vj.schema_metadata_id
-                WHERE CASE
-                    WHEN vj.best_variant_score IS NOT NULL
-                    THEN GREATEST(bj.jaccard_score, vj.best_variant_score)
-                    ELSE bj.jaccard_score
-                END >= 0.2
+                WHERE GREATEST(
+                               bj.matched_count::float / NULLIF($2, 0),
+                               CASE
+                                   WHEN bj.required_paths_count = 0 THEN 0.0
+                                   ELSE bj.matched_count::float / (bj.required_paths_count + 0.25 * ($2 - bj.matched_count))::float
+                               END,
+                               COALESCE(vj.best_variant_score, 0.0)
+                ) >= 0.2
                 ORDER BY preliminary_score DESC
                 LIMIT 5
             )
