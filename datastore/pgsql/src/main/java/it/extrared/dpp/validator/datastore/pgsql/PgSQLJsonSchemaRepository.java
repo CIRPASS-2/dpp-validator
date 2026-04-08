@@ -157,11 +157,13 @@ SELECT js.schema_content FROM json_schemas js WHERE js.id=$1
                     bj.schema_content,
                     bj.matched_count,
                     bj.required_paths_count,
-                    CASE
-                        WHEN vj.best_variant_score IS NOT NULL
-                        THEN GREATEST(bj.jaccard_score, vj.best_variant_score)
-                        ELSE bj.jaccard_score
-                    END AS preliminary_score
+                    GREATEST(
+                             matched_count::float / NULLIF($2, 0),
+                             CASE
+                                  WHEN required_paths_count = 0 THEN 0.0
+                                  ELSE matched_count::float / (required_paths_count + 0.25 * ($2 - matched_count))::float
+                             END
+                    ) AS preliminary_score
                 FROM base_jaccard bj
                 LEFT JOIN variant_jaccard vj ON bj.id = vj.schema_metadata_id
                 WHERE CASE
@@ -451,9 +453,9 @@ SELECT js.schema_content FROM json_schemas js WHERE js.id=$1
 
             int totalMatched = matchedBasePaths + matchedPatterns;
             int totalRequired = requiredBasePaths + patterns.size();
-
-            candidate.finalScore =
-                    totalMatched / (totalRequired + 0.6 * (inputCount - totalMatched));
+            double precision = (double) totalMatched / inputCount;
+            double jaccard = totalMatched / (totalRequired + 0.25 * (inputCount - totalMatched));
+            candidate.finalScore = Math.max(precision, jaccard);
         } else {
             candidate.finalScore = candidate.preliminaryScore;
         }
