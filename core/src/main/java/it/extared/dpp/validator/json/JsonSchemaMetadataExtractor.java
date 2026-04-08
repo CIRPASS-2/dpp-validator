@@ -168,17 +168,16 @@ public class JsonSchemaMetadataExtractor {
         }
 
         // Traverse non-required properties too to find nested required paths.
-        // Needed for schemas like AAS where the root has no required fields
-        // but nested definitions do.
         if (propertiesNode != null) {
             for (Map.Entry<String, JsonNode> entry : propertiesNode.properties()) {
                 String propName = entry.getKey();
                 if (requiredFields.contains(propName)) continue;
                 String fullPath = currentPath.isEmpty() ? propName : currentPath + "." + propName;
-                paths.addAll(recurseIntoProperty(entry.getValue(), root, fullPath, visited));
+                Set<JsonNode> siblingVisited = Collections.newSetFromMap(new IdentityHashMap<>());
+                siblingVisited.addAll(visited);
+                paths.addAll(recurseIntoProperty(entry.getValue(), root, fullPath, siblingVisited));
             }
         }
-
         return paths;
     }
 
