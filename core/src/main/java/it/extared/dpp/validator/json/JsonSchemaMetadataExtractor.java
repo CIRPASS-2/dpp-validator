@@ -222,9 +222,38 @@ public class JsonSchemaMetadataExtractor {
                     if (itemResolved != null) {
                         JsonNode itemFlat = flattenAllOf(itemResolved, root, visited);
                         JsonNode itemType = itemFlat.get(TYPE_KEY);
-                        if (itemType != null && itemType.asText().equals(OBJECT_KEY)) {
+                        boolean isObjectLike =
+                                (itemType != null && itemType.asText().equals(OBJECT_KEY))
+                                        || (itemType == null
+                                                && (itemFlat.has(PROPERTIES_KEY)
+                                                        || itemFlat.has(REQUIRED_KEY)));
+                        if (isObjectLike) {
                             paths.addAll(
                                     extractRequiredPaths(itemFlat, root, fullPath + "[]", visited));
+                        } else {
+                            // oneOf/anyOf into items
+                            String choiceKey =
+                                    itemFlat.has(ONE_OF_KEY)
+                                            ? ONE_OF_KEY
+                                            : itemFlat.has(ANY_OF_KEY) ? ANY_OF_KEY : null;
+                            if (choiceKey != null) {
+                                for (JsonNode variant : itemFlat.get(choiceKey)) {
+                                    Set<JsonNode> variantVisited =
+                                            Collections.newSetFromMap(new IdentityHashMap<>());
+                                    variantVisited.addAll(visited);
+                                    JsonNode varResolved =
+                                            resolveRefSafe(variant, root, variantVisited);
+                                    if (varResolved == null) continue;
+                                    JsonNode varFlat =
+                                            flattenAllOf(varResolved, root, variantVisited);
+                                    paths.addAll(
+                                            extractRequiredPaths(
+                                                    varFlat,
+                                                    root,
+                                                    fullPath + "[]",
+                                                    variantVisited));
+                                }
+                            }
                         }
                     }
                 }

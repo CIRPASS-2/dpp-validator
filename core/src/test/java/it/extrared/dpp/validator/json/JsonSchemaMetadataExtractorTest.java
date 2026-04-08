@@ -63,7 +63,7 @@ public class JsonSchemaMetadataExtractorTest {
     public void testExtraction4() {
         SchemaMetadata schema =
                 extractor.extractMetadata(CommonUtils.readJsonSchemaNode("test-aas-schema.json"));
-        assertEquals(111, schema.getRequiredPaths().size());
+        assertEquals(166, schema.getRequiredPaths().size());
         assertFalse(schema.isHasVariants());
         assertEquals(0, schema.getPatternProperties().size());
     }
