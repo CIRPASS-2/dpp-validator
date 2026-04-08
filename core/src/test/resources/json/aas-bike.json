@@ -1,0 +1,697 @@
+{
+  "modelType": "AssetAdministrationShellEnvironment",
+
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:example:aas:ebike-trail500",
+      "idShort": "EBikeTrail500",
+      "displayName": [{ "language": "en", "text": "VerdeCycle Trail 500 – AAS" }],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:epc:id:sgtin:0345678.223456.001",
+        "specificAssetIds": [
+          { "name": "GTIN",           "value": "3456789012345" },
+          { "name": "commodityCode",  "value": "8714910000"    }
+        ]
+      },
+      "submodels": [
+        { "type": "ExternalReference", "keys": [{ "type": "Submodel", "value": "urn:example:sm:nameplate:ebike-trail500"        }] },
+        { "type": "ExternalReference", "keys": [{ "type": "Submodel", "value": "urn:example:sm:technicaldata:ebike-trail500"    }] },
+        { "type": "ExternalReference", "keys": [{ "type": "Submodel", "value": "urn:example:sm:carbonfootprint:ebike-trail500" }] },
+        { "type": "ExternalReference", "keys": [{ "type": "Submodel", "value": "urn:example:sm:circularity:ebike-trail500"     }] },
+        { "type": "ExternalReference", "keys": [{ "type": "Submodel", "value": "urn:example:sm:energyconsumption:ebike-trail500" }] }
+      ],
+      "administration": {
+        "version": "1",
+        "revision": "0",
+        "templateId": "urn:idta:dpp:template:1.0"
+      }
+    }
+  ],
+
+  "submodels": [
+
+    {
+      "modelType": "Submodel",
+      "id": "urn:example:sm:nameplate:ebike-trail500",
+      "idShort": "Nameplate",
+      "displayName": [{ "language": "en", "text": "Digital Nameplate" }],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/nameplate/3/0/Nameplate" }]
+      },
+      "submodelElements": [
+
+        {
+          "modelType": "MultiLanguageProperty",
+          "idShort": "ManufacturerName",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAO677#002" }]
+          },
+          "supplementalSemanticIds": [
+            { "type": "ExternalReference", "keys": [{ "type": "GlobalReference", "value": "0112/2///61987#ABA565#009" }] }
+          ],
+          "value": [
+            { "language": "it", "text": "VerdeCycle S.r.l." },
+            { "language": "en", "text": "VerdeCycle S.r.l." }
+          ]
+        },
+
+        {
+          "modelType": "Property",
+          "idShort": "ManufacturerProductRoot",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAU732#001" }]
+          },
+          "valueType": "xs:string",
+          "value": "Trail"
+        },
+
+        {
+          "modelType": "MultiLanguageProperty",
+          "idShort": "ManufacturerProductFamily",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAU731#001" }]
+          },
+          "value": [
+            { "language": "en", "text": "Trail 500 Series" },
+            { "language": "it", "text": "Serie Trail 500" }
+          ]
+        },
+
+        {
+          "modelType": "MultiLanguageProperty",
+          "idShort": "ManufacturerProductDesignation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAW338#001" }]
+          },
+          "value": [
+            { "language": "en", "text": "VerdeCycle Trail 500 AAS" },
+            { "language": "it", "text": "VerdeCycle Trail 500 AAS" }
+          ]
+        },
+
+        {
+          "modelType": "Property",
+          "idShort": "ManufacturerProductType",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAO057#002" }]
+          },
+          "valueType": "xs:string",
+          "value": "Trail 500"
+        },
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "ContactInformation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation" }]
+          },
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "UniqueOperatorId",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAQ981#002" }]
+              },
+              "valueType": "xs:string",
+              "value": "IT-EO-2023-0188"
+            },
+            {
+              "modelType": "MultiLanguageProperty",
+              "idShort": "PostalAddress",
+              "value": [
+                { "language": "en", "text": "Via Rovereto 8, 38122 Trento, IT" }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ElectronicContact",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAQ715#003" }]
+              },
+              "valueType": "xs:string",
+              "value": "dpp@verdecycle.example.it"
+            }
+          ]
+        },
+
+        {
+          "modelType": "Property",
+          "idShort": "UniqueProductID",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAO677#002" }]
+          },
+          "valueType": "xs:string",
+          "value": "urn:epc:id:sgtin:0345678.223456.001"
+        },
+
+        {
+          "modelType": "Property",
+          "idShort": "YearOfConstruction",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAP906#001" }]
+          },
+          "valueType": "xs:string",
+          "value": "2024"
+        }
+      ]
+    },
+
+    {
+      "modelType": "Submodel",
+      "id": "urn:example:sm:technicaldata:ebike-trail500",
+      "idShort": "TechnicalData",
+      "displayName": [{ "language": "en", "text": "Technical Data" }],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2" }]
+      },
+      "submodelElements": [
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "GeneralInformation",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1" }]
+          },
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerName",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAO677#002" }]
+              },
+              "valueType": "xs:string",
+              "value": "VerdeCycle S.r.l."
+            },
+            {
+              "modelType": "MultiLanguageProperty",
+              "idShort": "ManufacturerProductDesignation",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAW338#001" }]
+              },
+              "value": [
+                { "language": "en", "text": "VerdeCycle Trail 500" },
+                { "language": "it", "text": "VerdeCycle Trail 500" }
+              ]
+            }
+          ]
+        },
+
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "ProductClassifications",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1" }]
+          },
+          "typeValueListElement": "SubmodelElementCollection",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "ProductClassificationItem00",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "ClassificationSystem",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/ClassificationSystem/1/1" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "ECLASS 14.0"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ClassificationSystemVersion",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/ClassificationSystemVersion/1/1" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "14.0"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ProductClassId",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassId/1/1" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "43350401"
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "TechnicalProperties",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/ZVEI/TechnicalData/MainSection/1/1" }]
+          },
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "NetWeight",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAB419#012" }]
+              },
+              "valueType": "xs:decimal",
+              "value": "22.3"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "NetWeightUnit",
+              "valueType": "xs:string",
+              "value": "kg"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "modelType": "Submodel",
+      "id": "urn:example:sm:carbonfootprint:ebike-trail500",
+      "idShort": "CarbonFootprint",
+      "displayName": [{ "language": "en", "text": "Carbon Footprint" }],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0" }]
+      },
+      "submodelElements": [
+
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "ProductCarbonFootprints",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprints/1/0" }]
+          },
+          "typeValueListElement": "SubmodelElementCollection",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "ProductCarbonFootprint00",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/1/0" }]
+              },
+              "value": [
+
+                {
+                  "modelType": "SubmodelElementList",
+                  "idShort": "PcfCalculationMethod",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/CarbonFootprint/PcfCalculationMethods/1/0" }]
+                  },
+                  "typeValueListElement": "Property",
+                  "value": [
+                    {
+                      "modelType": "Property",
+                      "idShort": "PcfCalculationMethod00",
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG854#003" }]
+                      },
+                      "valueType": "xs:string",
+                      "value": "ISO 14067"
+                    }
+                  ]
+                },
+
+                {
+                  "modelType": "Property",
+                  "idShort": "PcfCO2eq",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG855#003" }]
+                  },
+                  "valueType": "xs:decimal",
+                  "value": "210.5"
+                },
+
+                {
+                  "modelType": "Property",
+                  "idShort": "ReferenceImpactUnitForCalculation",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG856#003" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "piece"
+                },
+
+                {
+                  "modelType": "Property",
+                  "idShort": "PCFQuantityOfMeasureForCalculation",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG857#003" }]
+                  },
+                  "valueType": "xs:decimal",
+                  "value": "1"
+                },
+
+                {
+                  "modelType": "SubmodelElementList",
+                  "idShort": "LifeCyclePhases",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/CarbonFootprint/LifeCyclePhases/1/0" }]
+                  },
+                  "typeValueListElement": "Property",
+                  "value": [
+                    {
+                      "modelType": "Property",
+                      "idShort": "LifeCyclePhase00",
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG858#003" }]
+                      },
+                      "valueType": "xs:string",
+                      "value": "A1-A3"
+                    }
+                  ]
+                },
+
+                {
+                  "modelType": "Property",
+                  "idShort": "PublicationDate",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABG860#003" }]
+                  },
+                  "valueType": "xs:date",
+                  "value": "2024-03-01"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "modelType": "Submodel",
+      "id": "urn:example:sm:circularity:ebike-trail500",
+      "idShort": "Circularity",
+      "displayName": [{ "language": "en", "text": "Circularity and Sustainability" }],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/Circularity/Submodel/1/0" }]
+      },
+      "submodelElements": [
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "RecyclingInformation",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "RecyclingRate",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABE994#001" }]
+              },
+              "valueType": "xs:decimal",
+              "value": "82.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "RecyclingRateUnit",
+              "valueType": "xs:string",
+              "value": "%"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "RecycledMaterialsUse",
+              "valueType": "xs:decimal",
+              "value": "60.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "RecycledMaterialsUseUnit",
+              "valueType": "xs:string",
+              "value": "%"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "RecoverableRate",
+              "valueType": "xs:decimal",
+              "value": "91.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "RecoverableRateUnit",
+              "valueType": "xs:string",
+              "value": "%"
+            }
+          ]
+        },
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "DurabilityIndicators",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "Durability",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAY812#001" }]
+              },
+              "valueType": "xs:decimal",
+              "value": "25000"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "DurabilityUnit",
+              "valueType": "xs:string",
+              "value": "km"
+            }
+          ]
+        },
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "HazardousSubstances",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SubstanceOfConcern00",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "NameCAS",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/SubstanceOfConcern/NameCAS/1/0" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Iron phosphate lithium salt"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "NumberCAS",
+                  "valueType": "xs:string",
+                  "value": "15365-14-7"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "UsualName",
+                  "valueType": "xs:string",
+                  "value": "Lithium Iron Phosphate (LFP)"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SubstanceLocation",
+                  "valueType": "xs:string",
+                  "value": "Battery pack – LFP cathode cells"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ConcentrationValue",
+                  "valueType": "xs:decimal",
+                  "value": "38.0"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ConcentrationUnit",
+                  "valueType": "xs:string",
+                  "value": "%"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ThresholdValue",
+                  "valueType": "xs:decimal",
+                  "value": "0.1"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SubstanceOfConcern01",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "NameCAS",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/SubstanceOfConcern/NameCAS/1/0" }]
+                  },
+                  "valueType": "xs:string",
+                  "value": "Manganese"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "NumberCAS",
+                  "valueType": "xs:string",
+                  "value": "7439-96-5"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "UsualName",
+                  "valueType": "xs:string",
+                  "value": "Manganese"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SubstanceLocation",
+                  "valueType": "xs:string",
+                  "value": "Motore elettrico brushless – magneti"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ConcentrationValue",
+                  "valueType": "xs:decimal",
+                  "value": "1.2"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ConcentrationUnit",
+                  "valueType": "xs:string",
+                  "value": "%"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "ThresholdValue",
+                  "valueType": "xs:decimal",
+                  "value": "0.1"
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "WasteAndEmissions",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "HazardousWasteAmount",
+              "valueType": "xs:decimal",
+              "value": "185.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "HazardousWasteAmountUnit",
+              "valueType": "xs:string",
+              "value": "g"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "WaterConsumption",
+              "valueType": "xs:decimal",
+              "value": "4800.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "WaterConsumptionUnit",
+              "valueType": "xs:string",
+              "value": "L"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "EmissionToAir",
+              "valueType": "xs:decimal",
+              "value": "0.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "EmissionToAirUnit",
+              "valueType": "xs:string",
+              "value": "kg"
+            }
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "modelType": "Submodel",
+      "id": "urn:example:sm:energyconsumption:ebike-trail500",
+      "idShort": "EnergyConsumption",
+      "displayName": [{ "language": "en", "text": "Energy Consumption" }],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [{ "type": "GlobalReference", "value": "https://admin-shell.io/idta/energydatasheet/Submodel/1/0" }]
+      },
+      "submodelElements": [
+
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "EnergyConsumptionDetails",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "EnergyConsumptionValue",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAI667#008" }]
+              },
+              "valueType": "xs:decimal",
+              "value": "0.5"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "EnergyConsumptionUnit",
+              "valueType": "xs:string",
+              "value": "kWh/100km"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "IsEnergyRelated",
+              "valueType": "xs:boolean",
+              "value": "true"
+            }
+          ]
+        }
+      ]
+    }
+
+  ]
+}
