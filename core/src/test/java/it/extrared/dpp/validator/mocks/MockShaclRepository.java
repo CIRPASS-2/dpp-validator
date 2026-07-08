@@ -55,6 +55,15 @@ public class MockShaclRepository implements ShaclTemplateRepository {
     @Override
     public Uni<MatchResult<String>> findBestMatch(
             SqlConnection conn, InputJsonLdMetadata jsonLdMetadata) {
+        if (isOpenDppInput(jsonLdMetadata)) {
+            return Uni.createFrom()
+                    .item(
+                            new MatchResult<>(
+                                    "OpenDPP Battery DPP",
+                                    "1.0.0",
+                                    CommonUtils.readShaclString("opendpp_battery_shacl.ttl"),
+                                    MatchType.EXACT_TYPE_MATCH));
+        }
         return Uni.createFrom()
                 .item(
                         new MatchResult<>(
@@ -62,6 +71,15 @@ public class MockShaclRepository implements ShaclTemplateRepository {
                                 "1.1.0",
                                 CommonUtils.readShaclString("vehicle_shacl.ttl"),
                                 MatchType.EXACT_TYPE_MATCH));
+    }
+
+    /**
+     * Routes inputs whose type/vocabulary belong to the OpenDPP vocabulary to the OpenDPP template.
+     */
+    private static boolean isOpenDppInput(InputJsonLdMetadata metadata) {
+        return (metadata.getType() != null && metadata.getType().contains("opendpp-node.eu"))
+                || (metadata.getVocabularyUri() != null
+                        && metadata.getVocabularyUri().contains("opendpp-node.eu"));
     }
 
     @Override
