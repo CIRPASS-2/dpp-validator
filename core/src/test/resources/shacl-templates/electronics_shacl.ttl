@@ -5,8 +5,7 @@
 @prefix edpp: <http://example.org/electronics-dpp#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-<http://example.org/electronics-dpp> a owl:Ontology ;
-    owl:imports <http://example.org/electronics-dpp> .
+<http://example.org/electronics-dpp> a owl:Ontology .
 
 edpp:ElectronicsDPPShape
     a sh:NodeShape ;

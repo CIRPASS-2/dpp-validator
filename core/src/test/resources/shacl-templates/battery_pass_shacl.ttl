@@ -5,8 +5,7 @@
 @prefix bp: <http://example.org/battery-passport#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-<http://example.org/battery-passport> a owl:Ontology ;
-    owl:imports <http://example.org/battery-passport> .
+<http://example.org/battery-passport> a owl:Ontology .
 
 bp:BatteryPassportShape
     a sh:NodeShape ;
