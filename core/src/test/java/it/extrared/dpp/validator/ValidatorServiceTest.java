@@ -152,6 +152,46 @@ public class ValidatorServiceTest {
 
     @Test
     @RunOnVertxContext
+    public void testOpenDPPBatteryJSONLDValidation(UniAsserter uniAsserter) throws IOException {
+        Uni<ValidationReport> reportUni =
+                service.validate(
+                        CommonUtils.readJsonLdString("valid-opendpp-battery-ld.json").getBytes(),
+                        ValidationType.RDF);
+        uniAsserter.assertTrue(() -> reportUni.map(ValidationReport::isValid));
+    }
+
+    @Test
+    @RunOnVertxContext
+    public void testFailingOpenDPPBatteryJSONLDValidation(UniAsserter uniAsserter)
+            throws IOException {
+        Uni<ValidationReport> reportUni =
+                service.validate(
+                        CommonUtils.readJsonLdString("invalid-opendpp-battery-ld.json").getBytes(),
+                        ValidationType.RDF);
+        uniAsserter.assertThat(
+                () -> reportUni,
+                vr -> {
+                    assertFalse(vr.isValid());
+                    assertEquals(2, vr.getInvalidProperties().size());
+                    assertTrue(
+                            vr.getInvalidProperties().stream()
+                                    .anyMatch(
+                                            p ->
+                                                    p.getProperty()
+                                                            .contains(
+                                                                    "https://opendpp-node.eu/ns/dpp#status")));
+                    assertTrue(
+                            vr.getInvalidProperties().stream()
+                                    .anyMatch(
+                                            p ->
+                                                    p.getProperty()
+                                                            .contains(
+                                                                    "https://opendpp-node.eu/ns/dpp#metadata")));
+                });
+    }
+
+    @Test
+    @RunOnVertxContext
     public void testJSONLDValidationByNameAndVersion(UniAsserter uniAsserter) throws IOException {
         Uni<ValidationReport> reportUni =
                 service.validate(

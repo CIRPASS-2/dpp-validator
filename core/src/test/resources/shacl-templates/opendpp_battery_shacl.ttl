@@ -1,0 +1,192 @@
+# OpenDPP DPP / battery SHACL starter shapes — contributed to CIRPASS-2 dpp-validator
+#
+# OpenDPP-authored · NON-NORMATIVE · Apache-2.0. Offered as a starter contribution to
+# CIRPASS-2 to complement the bundled `{battery_pass,electronics,vehicle}_shacl.ttl`
+# templates, which use placeholder `http://example.org/…` namespaces. These shapes instead
+# target a REAL implementer's DPP vocabulary, so this repo ships something that validates an
+# actual passport out of the box. They are NOT an EU / CIRPASS-2 conformance oracle.
+#
+# Source (authoritative copy, kept in lockstep with OpenDPP's CI):
+#   https://github.com/OpenDPP/opendpp-interop/blob/main/shapes/opendpp-dpp-shapes.ttl
+#
+# Fixtures + tests in this PR:
+#   ../json-ld/valid-opendpp-battery-ld.json   → conforms
+#   ../json-ld/invalid-opendpp-battery-ld.json → 2 violations (bad dpp:status enum; metadata
+#                                                node fails BatteryMetadataShape)
+# Exercised by ValidatorServiceTest#testOpenDPPBatteryJSONLDValidation and
+# #testFailingOpenDPPBatteryJSONLDValidation (Jena SHACL, fully offline: the fixtures carry an
+# inline @context only, so parsing needs no remote context fetch). The same shapes + sample are
+# also validated with `rdf-validate-shacl` in OpenDPP's public interop harness.
+#
+# These shapes are designed against the ACTUAL RDF the OpenDPP passport expands to under its
+# inline `@context`. Only terms present in that inline context survive JSON-LD → RDF
+# expansion, so the shapes target the `dpp:DigitalProductPassport` root and use property
+# paths; nested `economicOperator` / `Facility` nodes are constrained by PRESENCE (their inner
+# fields are not in the inline context and so do not survive expansion — class-targeting them
+# would be unsound). Starter coverage of the fields OpenDPP authoritatively models, not an
+# exhaustive ESPR battery-regulation rulebook.
+#
+# Copyright 2026 OpenDPP UAB. Licensed under the Apache License, Version 2.0.
+
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix opdppsh: <https://opendpp-node.eu/shapes/dpp#> .
+@prefix dpp:     <https://opendpp-node.eu/ns/dpp#> .
+@prefix dppx:    <https://opendpp-node.eu/contexts/dpp/v1#> .
+
+# ── Digital Product Passport ──────────────────────────────────────────────────────────────────
+# Targets every node typed dpp:DigitalProductPassport. Constraints reflect what OpenDPP
+# authoritatively emits on the PUBLIC JSON-LD passport.
+opdppsh:DigitalProductPassportShape
+    a sh:NodeShape ;
+    sh:targetClass dpp:DigitalProductPassport ;
+
+    # Lifecycle status — one of OpenDPP's real Passport lifecycle values. "BOGUS_STATUS" fails here.
+    sh:property [
+        sh:path dpp:status ;
+        sh:name "status" ;
+        sh:description "OpenDPP passport lifecycle status." ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "DRAFT" "ACTIVE" "PUBLISHED" "ARCHIVED" "DECOMMISSIONED" "RECYCLED" ) ;
+    ] ;
+
+    # Economic operator — present (one node). Its inner fields (name / regId / role) are not in the
+    # inline JSON-LD context and so do not survive expansion, so we constrain presence only.
+    sh:property [
+        sh:path dpp:economicOperator ;
+        sh:name "economicOperator" ;
+        sh:description "The responsible economic operator (ESPR Art. 2). Presence-checked." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:BlankNodeOrIRI ;
+    ] ;
+
+    # Manufacturing facility — present (one node). The GLN / country live on a nested node not
+    # carried by the inline context; presence is what holds in the expanded RDF.
+    sh:property [
+        sh:path dpp:manufacturingFacility ;
+        sh:name "manufacturingFacility" ;
+        sh:description "The manufacturing facility (carries a GS1 GLN-13 on the full record)." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:BlankNodeOrIRI ;
+    ] ;
+
+    # Battery / ESPR metadata block — present, and its public battery fields are shape-checked.
+    sh:property [
+        sh:path dpp:metadata ;
+        sh:name "metadata" ;
+        sh:description "The public product metadata block (battery characteristics, carbon footprint, durability)." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:node opdppsh:BatteryMetadataShape ;
+    ] ;
+
+    # eIDAS seal material — the vendor MerkleTreeAttestationProof seal + the signing public key.
+    sh:property [
+        sh:path dpp:digitalSeal ;
+        sh:name "digitalSeal" ;
+        sh:description "The product-passport digital seal (vendor MerkleTreeAttestationProof signature)." ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dpp:signingPublicKey ;
+        sh:name "signingPublicKey" ;
+        sh:description "PEM-encoded public key that verifies the seal." ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "-----BEGIN PUBLIC KEY-----" ;
+    ] ;
+
+    # Flattened (top-level) battery fields — OpenDPP mirrors the metadata battery fields at the
+    # root too; require the load-bearing ESPR-battery ones with the same value constraints.
+    sh:property [
+        sh:path dppx:category ;
+        sh:name "category" ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dppx:batteryCategory ;
+        sh:name "batteryCategory" ;
+        sh:description "EU Battery Regulation category." ;
+        sh:datatype xsd:string ;
+        sh:in ( "lmt" "industrial" "ev" "portable" "sli" ) ;
+    ] ;
+    sh:property [
+        sh:path dppx:ratedCapacity ;
+        sh:name "ratedCapacity" ;
+        sh:description "Rated capacity (non-negative integer)." ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+    ] .
+
+# ── Battery / ESPR metadata block ─────────────────────────────────────────────────────────────
+# Applied to the dpp:metadata node. These terms ARE in the inline JSON-LD context, so they survive
+# expansion and can be value-constrained.
+opdppsh:BatteryMetadataShape
+    a sh:NodeShape ;
+
+    sh:property [
+        sh:path dppx:category ;
+        sh:name "category" ;
+        sh:description "Product category (e.g. \"batteries\")." ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dppx:batteryCategory ;
+        sh:name "batteryCategory" ;
+        sh:description "EU Battery Regulation category." ;
+        sh:datatype xsd:string ;
+        sh:in ( "lmt" "industrial" "ev" "portable" "sli" ) ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dppx:chemistry ;
+        sh:name "chemistry" ;
+        sh:description "Cell chemistry (free text, e.g. \"LFP (Lithium Iron Phosphate)\")." ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dppx:ratedCapacity ;
+        sh:name "ratedCapacity" ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Carbon footprint — present (ESPR Art. 7 carbon-footprint declaration). Its inner co2eKg / unit
+    # fields are not in the inline context, so we check presence only.
+    sh:property [
+        sh:path dppx:carbonFootprint ;
+        sh:name "carbonFootprint" ;
+        sh:description "Carbon-footprint declaration. Presence-checked." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Durability — present (ESPR durability declaration: cycle life, calendar life).
+    sh:property [
+        sh:path dppx:durability ;
+        sh:name "durability" ;
+        sh:description "Durability declaration (cycle life / calendar life). Presence-checked." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Material composition — present, repeatable (one node per declared material).
+    sh:property [
+        sh:path dppx:materialComposition ;
+        sh:name "materialComposition" ;
+        sh:description "Declared material composition. Presence-checked (repeatable)." ;
+        sh:minCount 1 ;
+    ] .
