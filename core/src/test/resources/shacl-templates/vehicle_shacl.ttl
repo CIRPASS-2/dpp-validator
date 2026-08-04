@@ -6,8 +6,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
 
-<http://example.org/vehicle-dpp> a owl:Ontology ;
-    owl:imports <http://example.org/vehicle-dpp> .
+<http://example.org/vehicle-dpp> a owl:Ontology .
 
 vdpp:VehicleDPPShape
     a sh:NodeShape ;
